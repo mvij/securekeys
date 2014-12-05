@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SecureKeys</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="gen_pass_hint">[tap to copy Generated Password]</string>
+    <string name="enter_pass_hint">Enter passphrase</string>
+    <string name="hide_pass">hide passphrase</string>
+    <string name="please_enter_input">Please enter  a valid passphrase</string>
+    <string name="password_copied">Password copied to clipboard</string>
+    <string name="password_length">Password Length</string>
+
+</resources>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    
+    <color name="accent_color">#0f90d7</color>
+    <color name="Text_white">#f1f1f1</color>
+    <color name="button_color">#990f64b2</color>
+    <color name="button_color_p">#40abcd</color>
+    <color name="edt_color">#78969f</color>
+    <color name="edt_hint_color">#bac6ca</color>
+    <color name="edt_bg_color">#eaeaea</color>
+
+</resources>

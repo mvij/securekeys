@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SecureKeys.Light" parent="Theme.AppCompat.Light">
+        <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
+        <item name="android:actionBarStyle">@style/SecureKeysActionBarStyle</item>
+    </style>
+
+    <style name="SecureKeys.Dark" parent="Theme.AppCompat">
+        <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
+        <item name="android:actionBarStyle">@style/SecureKeysActionBarStyle</item>
+        <item name="android:windowBackground">@drawable/bg_app_dark</item>
+    </style>
+</resources>
