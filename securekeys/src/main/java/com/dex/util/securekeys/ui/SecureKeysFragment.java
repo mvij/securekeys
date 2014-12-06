@@ -156,6 +156,7 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements ViewTr
                 mPassWordView.setVisibility(View.VISIBLE);
                 mPassPhraseView.setVisibility(View.GONE);
                 mPassPhraseTextView.setText(passPhrase);
+
                 mPasswordTextView.setText(new Securekeys().getPassPhrase(passPhrase,
                         mPassLengthSeekBar.getProgress(), mCaseParamCheckBox.isChecked(),
                         mCharParamCheckBox.isChecked(),
