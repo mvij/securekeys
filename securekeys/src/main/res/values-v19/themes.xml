@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SecureKeys.Light" parent="Theme.AppCompat.Light">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:buttonStyle">@style/DefaultButton</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
+        <item name="android:actionBarStyle">@style/SecureKeysActionBarStyle</item>
+        <item name="android:windowTranslucentStatus">true</item>
+        <item name="android:windowTranslucentNavigation">false</item>
+        <item name="android:fitsSystemWindows">false</item>
+    </style>
+</resources>

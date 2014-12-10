@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="SecureKeysActionBarStyle" parent="Widget.AppCompat.Light.ActionBar.Solid.Inverse">
+        <item name="background">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="android:displayOptions">none</item>
+        <item name="android:actionBarSize">@dimen/actionbar_size</item>
+        <item name="android:height">@dimen/actionbar_size</item>
+        <item name="android:icon">@drawable/ic_app</item>
+
+    </style>
+</resources>

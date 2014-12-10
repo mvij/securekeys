@@ -3,8 +3,6 @@
  */
 package com.dexetra.securekeyslib.util;
 
-import android.util.Log;
-
 import com.dexetra.securekeyslib.util.Constants.SecureKeysConstants;
 
 import java.math.BigInteger;
@@ -73,7 +71,7 @@ public class Securekeys {
 			tStr = tStr + phrase.charAt(i);
 		for (int i = 0; i < pos; i++)
 			tStr = tStr + phrase.charAt(i);
-        Log.i("HashString:", "value:" + tStr);
+        //Log.i("HashString:", "value:" + tStr);
 		return tStr;
 	}
 
@@ -89,7 +87,7 @@ public class Securekeys {
 			return md5;
 
 		} catch (NoSuchAlgorithmException e) {
-			Log.e("MD5", e.getMessage());
+			//Log.e("MD5", e.getMessage());
 			return null;
 		}
 

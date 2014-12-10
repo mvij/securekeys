@@ -2,13 +2,11 @@
 <resources>
 
     <style name="SecureKeys.Light" parent="Theme.AppCompat.Light">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:buttonStyle">@style/DefaultButton</item>
+        <item name="android:windowBackground">@android:color/white</item>
         <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
         <item name="android:actionBarStyle">@style/SecureKeysActionBarStyle</item>
-    </style>
-
-    <style name="SecureKeys.Dark" parent="Theme.AppCompat">
-        <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
-        <item name="android:actionBarStyle">@style/SecureKeysActionBarStyle</item>
-        <item name="android:windowBackground">@drawable/bg_app_dark</item>
+        <item name="android:fitsSystemWindows">false</item>
     </style>
 </resources>

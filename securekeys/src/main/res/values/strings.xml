@@ -10,5 +10,6 @@
     <string name="please_enter_input">Please enter  a valid passphrase</string>
     <string name="password_copied">Password copied to clipboard</string>
     <string name="password_length">Password Length</string>
+    <string name="sfc_help">Help</string>
 
 </resources>

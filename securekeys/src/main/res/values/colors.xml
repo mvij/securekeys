@@ -9,4 +9,12 @@
     <color name="edt_hint_color">#bac6ca</color>
     <color name="edt_bg_color">#eaeaea</color>
 
+    <color name="accent">#f86b67</color>
+    <color name="normal">#979797</color>
+    <color name="pressed">#f33d38</color>
+    <color name="background">#f2f2f2</color>
+    <color name="background_translucent">#efffffff</color>
+
+    <color name="text_hint">#7f979797</color>
+
 </resources>

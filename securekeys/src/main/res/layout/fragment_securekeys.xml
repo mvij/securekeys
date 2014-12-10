@@ -1,169 +1,251 @@
 <?xml version="1.0" encoding="utf-8"?>
 
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin">
-
-
-    <RelativeLayout
-        android:id="@+id/rel_securekeys_pass_length"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent"
+        android:scrollbarStyle="outsideOverlay"
+        android:clipToPadding="false"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/txt_securekeys_pass_length_title"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/txt_securekeys_pass_length"
-            android:gravity="center_vertical"
-            android:text="@string/password_length" />
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/txt_securekeys_pass_length"
-            android:layout_width="@dimen/generate_button_height"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="center" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/actionbar_size"/>
 
-        <SeekBar
-            android:id="@+id/seek_securekeys_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/txt_securekeys_pass_length_title"
-            android:layout_marginTop="8dp"
-            android:max="25"
-            android:progress="5" />
+            <EditText
+                android:id="@+id/edt_securekeys_passphrase"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:background="@color/edt_bg_color"
+                android:gravity="center"
+                android:hint="@string/enter_pass_hint"
+                android:imeOptions="actionGo"
+                android:minHeight="@dimen/actionbar_size"
+                android:singleLine="true"
+                android:textColor="@color/edt_color"
+                android:textColorHint="@color/edt_hint_color"
+                android:textSize="@dimen/text_medium"/>
 
-    </RelativeLayout>
+            <CheckBox
+                android:id="@+id/chk_securekeys_mask"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp"
+                android:checked="false"
+                android:padding="4dp"
+                android:text="Mask"
+                android:textColor="@color/normal"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                >
+
+                <SeekBar
+                    android:id="@+id/seek_securekeys_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1"
+                    android:progressDrawable="@drawable/seekbar"
+                    android:thumb="@drawable/thumb"
+                    android:max="25"
+                    android:progress="5"/>
+
+                <TextView
+                    android:id="@+id/txt_securekeys_pas_length"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="4dp"
+                    android:text="5"
+                    android:textSize="14sp"
+                    />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/lin_securekeys_pass_params"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:id="@+id/layout_securekeys_case"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txt_securekeys_case_label"
+                            style="@style/ParamTextStyle"
+                            android:text="Aa"/>
+
+                        <CheckBox
+                            android:id="@+id/chk_securekeys_case"
+                            style="@style/ParamCheckStyle"
+                            android:button="@null"
+                            />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/txt_securekeys_case_label1"
+                        style="@style/ParamLabelStyle"
+                        android:text="Mixed"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_securekeys_num"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txt_securekeys_num_label"
+                            style="@style/ParamTextStyle"
+                            android:text="56"/>
+
+                        <CheckBox
+                            android:id="@+id/chk_securekeys_num"
+                            style="@style/ParamCheckStyle"
+                            android:button="@null"
+                            />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/txt_securekeys_num_label1"
+                        style="@style/ParamLabelStyle"
+                        android:text="Numbers"
+                        />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_securekeys_char"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/txt_securekeys_char_label"
+                            style="@style/ParamTextStyle"
+                            android:text="#*"/>
+
+                        <CheckBox
+                            android:id="@+id/chk_securekeys_char"
+                            style="@style/ParamCheckStyle"
+                            android:button="@null"
+                            />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/txt_securekeys_char_label1"
+                        style="@style/ParamLabelStyle"
+                        android:text="Special"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/imb_securekeys_generate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="24dp"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/btn_generate"
+                android:minEms="6"
+                android:paddingBottom="8dp"
+                android:paddingLeft="16dp"
+                android:enabled="false"
+                android:paddingRight="16dp"
+                android:paddingTop="8dp"
+                android:text="Generate"
+                android:textColor="@color/Text_white"
+                android:textSize="20sp"/>
+
+        </LinearLayout>
+
+
+    </ScrollView>
 
     <LinearLayout
-        android:id="@+id/lin_securekeys_pass_params"
+        android:id="@+id/lin_securekeys_generated"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/background_translucent"
         android:gravity="center"
-        android:orientation="horizontal">
-
-        <CheckBox
-            android:id="@+id/chk_securekeys_case"
-            style="@style/ParamCheckStyle"
-            android:button="@drawable/btn_check_num" />
-
-        <CheckBox
-            android:id="@+id/chk_securekeys_char"
-            style="@style/ParamCheckStyle"
-            android:button="@drawable/btn_check_case" />
-
-        <CheckBox
-            android:id="@+id/chk_securekeys_num"
-            style="@style/ParamCheckStyle"
-            android:button="@drawable/btn_check_char" />
-    </LinearLayout>
-
-    <RelativeLayout
-        android:id="@+id/rel_securekeys_passphrase"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true">
-
-
-        <EditText
-            android:id="@+id/edt_securekeys_passphrase"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imb_securekeys_generate"
-            android:layout_alignTop="@+id/imb_securekeys_generate"
-            android:layout_marginBottom="1dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="1dp"
-            android:layout_toRightOf="@+id/chk_securekeys_mask"
-            android:background="@color/edt_bg_color"
-            android:gravity="center"
-            android:hint="@string/enter_pass_hint"
-            android:imeOptions="actionGo"
-            android:minHeight="@dimen/generate_button_height"
-            android:paddingLeft="@dimen/balancing_padding"
-            android:paddingRight="@dimen/generate_button_height"
-            android:singleLine="true"
-            android:textColor="@color/edt_color"
-            android:textColorHint="@color/edt_hint_color"
-            android:textSize="@dimen/text_medium" />
-
-        <CheckBox
-            android:id="@+id/chk_securekeys_mask"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/edt_securekeys_passphrase"
-            android:layout_alignTop="@+id/edt_securekeys_passphrase"
-            android:background="@color/edt_bg_color"
-            android:button="@drawable/ic_launcher" />
-
-        <ImageButton
-            android:id="@+id/imb_securekeys_generate"
-            android:layout_width="@dimen/generate_button_height"
-            android:layout_height="@dimen/generate_button_height"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/btn_generate"
-            android:src="@drawable/ic_go" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rel_securekeys_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
+        android:orientation="vertical"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:visibility="gone">
 
         <TextView
-            android:id="@+id/txt_securekeys_passphrase"
+            android:id="@+id/txt_securekeys_password_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your passcode is"
+            android:padding="16dp"
+            android:textSize="16sp"
+            />
+
+        <view
+            android:id="@+id/txt_securekeys_password"
+            class="com.dexetra.securekeys.widgets.MeasuredTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:ellipsize="marquee"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:gravity="center"
-            android:marqueeRepeatLimit="marquee_forever"
-            android:padding="4dp"
-            android:scrollHorizontally="true"
-            android:textSize="@dimen/passphrase_text_size" />
-
+            />
 
         <TextView
-            android:id="@+id/txt_securekeys_password"
+            android:id="@+id/txt_securekeys_password_hint"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imb_securekeys_reset"
-            android:layout_alignTop="@+id/imb_securekeys_reset"
-            android:layout_marginBottom="1dp"
-            android:layout_marginRight="24dp"
-            android:layout_marginTop="1dp"
-            android:background="@color/edt_bg_color"
+            android:textSize="14sp"
             android:gravity="center"
-            android:minHeight="@dimen/generate_button_height"
-            android:paddingLeft="@dimen/balancing_padding"
-            android:paddingRight="@dimen/generate_button_height"
-            android:singleLine="true"
-            android:textColor="@color/edt_color"
-            android:textColorHint="@color/edt_hint_color"
-            android:textIsSelectable="true"
-            android:textSize="@dimen/text_medium" />
+            android:padding="16dp"
+            android:layout_gravity="bottom"
+            android:text="Tap to Copy"
+            android:textColor="@color/text_hint"
+            />
 
-        <ImageButton
-            android:id="@+id/imb_securekeys_reset"
-            android:layout_width="@dimen/generate_button_height"
-            android:layout_height="@dimen/generate_button_height"
-            android:layout_alignParentRight="true"
-            android:layout_below="@+id/txt_securekeys_passphrase"
-            android:background="@drawable/btn_generate"
-            android:src="@drawable/ic_go" />
+    </LinearLayout>
 
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>

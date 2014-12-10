@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
-<solid android:color="@color/button_color_p"/>
+       android:shape="rectangle">
+    <solid android:color="@color/pressed"/>
+
+    <corners android:radius="@dimen/corner_round" android:bottomLeftRadius="@dimen/corner_round"
+             android:bottomRightRadius="@dimen/corner_round" android:topLeftRadius="@dimen/corner_round"
+             android:topRightRadius="@dimen/corner_round"
+        />
 </shape>

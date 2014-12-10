@@ -3,7 +3,7 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:state_pressed="true"  android:drawable="@drawable/bg_generate_p"/>
-    <item android:state_enabled="false"  android:drawable="@drawable/bg_generate_n"/>
+    <item android:state_enabled="false"  android:drawable="@drawable/bg_generate_d"/>
     <item android:state_enabled="true" android:state_focused="false" android:drawable="@drawable/bg_generate_n"/>
     <item android:state_enabled="true" android:state_focused="true"  android:drawable="@drawable/bg_generate_n"/>
 
