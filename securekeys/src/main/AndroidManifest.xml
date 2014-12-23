@@ -3,8 +3,6 @@
     android:installLocation="auto"
     package="com.dexetra.securekeys" >
 
-    <uses-permission android:name="android.permission.INTERNET" />
-
     <application
         android:name="com.dexetra.securekeys.SecurekeysApplication"
         android:allowBackup="true"
@@ -23,6 +21,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name="com.dexetra.securekeys.ui.WebviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:theme="@style/SecureKeys.Light" />
     </application>
 
 </manifest>

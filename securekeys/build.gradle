@@ -11,20 +11,53 @@ android {
         versionCode 1
         versionName "3.0"
     }
+    File signFile = rootProject.file('secure_keystore.properties')
+    if (signFile.exists()) {
+        Properties properties = new Properties()
+        properties.load(new FileInputStream(signFile))
+        signingConfigs {
+            release {
+                storeFile rootProject.file(properties['STORE_FILE'])
+                storePassword properties['STORE_PASSWORD']
+                keyAlias properties['KEY_ALIAS']
+                keyPassword properties['KEY_PASSWORD']
+            }
+        }
+    }
+
     buildTypes {
         debug{
             applicationIdSuffix ".debug"
         }
 
-        release {
-            //runProguard false
-            //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-        }
+        if (signFile.exists())
+            release {
+                //runProguard false
+                //proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+                signingConfig signingConfigs.release
+            }
+        if (signFile.exists())
+            releaseDebuggable {
+                debuggable true
+                signingConfig signingConfigs.release
+            }
 
         test.initWith(buildTypes.debug)
         test{
             applicationIdSuffix ".testrelease"
             signingConfig signingConfigs.debug
+        }
+    }
+
+    applicationVariants.all { variant ->
+        if (variant.buildType.name.equals("releaseDebuggable")) {
+            variant.outputs.each { output ->
+                output.outputFile = new File(output.outputFile.parent, "secure_playstore_debuggable.apk");
+            }
+        }else if (variant.buildType.name.equals("release")) {
+            variant.outputs.each{ output ->
+                output.outputFile = new File(output.outputFile.parent, "secure_playstore.apk");
+            }
         }
     }
 }

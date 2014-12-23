@@ -5,7 +5,6 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -105,8 +104,7 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements Secure
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_help:
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setData(Uri.parse("http://goo.gl/219H0Y"));
+                Intent intent = WebviewActivity.getLaunchIntent(getActivity());
                 startActivity(intent);
                 break;
         }
