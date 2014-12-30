@@ -3,7 +3,7 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light">
         <item name="android:buttonStyle">@style/DefaultButton</item>
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
         <!-- Customize your theme here. -->
     </style>
 
@@ -13,7 +13,16 @@
         <item name="displayOptions">none</item>
         <item name="actionBarSize">@dimen/actionbar_size</item>
         <item name="android:height">@dimen/actionbar_size</item>
-        <item name="android:icon">@drawable/ic_app</item>
+        <item name="android:icon">@drawable/ic_app_light</item>
+
+    </style>
+    <style name="SecureKeysActionBarStyle.Dark" parent="Widget.AppCompat.ActionBar.Solid">
+        <item name="background">@android:color/transparent</item>
+        <item name="android:background">@android:color/transparent</item>
+        <item name="displayOptions">none</item>
+        <item name="actionBarSize">@dimen/actionbar_size</item>
+        <item name="android:height">@dimen/actionbar_size</item>
+        <item name="android:icon">@drawable/ic_app_dark</item>
 
     </style>
 
@@ -34,9 +43,9 @@
         <item name="android:layout_margin">2dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">49sp</item>
-        <item name="android:background">@color/background</item>
+        <item name="android:background">@color/edt_bg_color</item>
         <item name="android:minHeight">90dp</item>
-        <item name="android:textColor">@color/normal</item>
+        <item name="android:textColor">@color/light_normal</item>
     </style>
 
     <style name="DefaultButton" parent="android:Widget.Button">
@@ -46,7 +55,7 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:paddingTop">4dp</item>
-        <item name="android:textColor">@color/normal</item>
+        <item name="android:textColor">@color/light_normal</item>
         <item name="android:paddingBottom">4dp</item>
         <item name="android:gravity">center</item>
     </style>

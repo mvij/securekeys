@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.dexetra.securekeys.R;
 import com.dexetra.securekeys.utils.LoadFonts;
+import com.dexetra.securekeys.utils.ThemeHelper;
 import com.dexetra.securekeys.utils.TypefaceSpan;
 
 
@@ -21,6 +22,7 @@ public class SecureKeysActivity extends SecureKeysBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
+        ThemeHelper.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_secure_keys);
         if (savedInstanceState == null) {
             mSecureKeysFragment = new SecureKeysFragment();

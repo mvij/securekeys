@@ -34,6 +34,7 @@ import android.widget.Toast;
 
 import com.dexetra.securekeys.R;
 import com.dexetra.securekeys.utils.LoadFonts;
+import com.dexetra.securekeys.utils.ThemeHelper;
 import com.dexetra.securekeys.widgets.MeasuredTextView;
 import com.dexetra.securekeyslib.util.Securekeys;
 
@@ -73,6 +74,7 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements Secure
     private int mKeyBoardHeight;
 
     private int normalColor,accentColor;
+    private ThemeHelper mThemeHelper;
 
     public SecureKeysFragment() {
 
@@ -101,11 +103,24 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements Secure
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem menuItem = menu.findItem(R.id.action_theme);
+        if(menuItem!=null){
+            menuItem.setTitle(mThemeHelper.getCurrentTheme().name().equals(ThemeHelper.Theme.DARK.name())?"Light Theme":"Dark Theme");
+        }
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.action_help:
                 Intent intent = WebviewActivity.getLaunchIntent(getActivity());
                 startActivity(intent);
+                break;
+            case R.id.action_theme:
+                mThemeHelper.toggleTheme();
+                ThemeHelper.changeToTheme(getActivity());
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -116,8 +131,37 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements Secure
         super.onActivityCreated(savedInstanceState);
         ActionBar actionBar = ((ActionBarActivity) getActivity()).getSupportActionBar();
         actionBar.setDisplayShowHomeEnabled(true);
-        actionBar.setIcon(R.drawable.ic_app);
         actionBar.setElevation(0);
+        doUpTheme();
+    }
+
+    private void doUpTheme() {
+        mThemeHelper = ThemeHelper.instance(getActivity());
+        ThemeHelper.Theme theme = mThemeHelper.getCurrentTheme();
+        normalColor = getResources().getColor(theme.normalColorId);
+        accentColor = getResources().getColor(theme.accentColorId);
+
+        getActivity().setTheme(mThemeHelper.getCurrentTheme().equals(ThemeHelper.Theme.LIGHT)?R.style.SecureKeys_Dark:R.style.SecureKeys_Light);
+
+        ActionBar actionBar =((ActionBarActivity)getActivity()).getSupportActionBar();
+        actionBar.setIcon(theme.iconResId);
+
+        getView().findViewById(R.id.rootview).setBackgroundResource(theme.bgColorId);
+
+        mPassPhraseEditText.setBackgroundResource(theme.edtBgColorId);
+
+        mCaseLabel.setBackgroundResource(theme.edtBgColorId);
+        mNumLabel.setBackgroundResource(theme.edtBgColorId);
+        mCharLabel.setBackgroundResource(theme.edtBgColorId);
+
+        mPassLengthSeekBar.setProgressDrawable(getResources().getDrawable(theme.seekbarResId));
+        mPassLengthSeekBar.setThumb(getResources().getDrawable(theme.seekbarThumbId));
+
+        mGenerateButton.setBackgroundResource(theme.genButtonResId);
+
+        mPasswordTextView.setColorResId(theme.accentColorId,theme.shadowColorId);
+
+        mPasswordView.setBackgroundResource(theme.passwordBgColorId);
     }
 
     private void init(View rootView) {
@@ -152,9 +196,6 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements Secure
         //mPassLengthView.setVisibility(View.GONE);
         mGenerateButton.setEnabled(false);
         //mPassLengthTextView.setText(Integer.toString(mPassLengthSeekBar.getProgress()));
-
-        normalColor = getResources().getColor(R.color.normal);
-        accentColor = getResources().getColor(R.color.accent);
 
     }
 

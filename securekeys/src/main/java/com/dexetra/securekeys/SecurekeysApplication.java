@@ -5,6 +5,7 @@ import android.os.Handler;
 
 import com.dexetra.securekeys.utils.LoadFonts;
 import com.dexetra.securekeys.utils.ThemeAndFontListener;
+import com.dexetra.securekeys.utils.ThemeHelper;
 
 import java.util.ArrayList;
 
@@ -21,6 +22,7 @@ public class SecurekeysApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initFonts();
+        ThemeHelper.instance(this);
     }
 
     public void initFonts() {

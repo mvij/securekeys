@@ -16,6 +16,7 @@ import android.webkit.WebView;
 
 import com.dexetra.securekeys.R;
 import com.dexetra.securekeys.utils.LoadFonts;
+import com.dexetra.securekeys.utils.ThemeHelper;
 
 
 /**
@@ -39,11 +40,12 @@ public class WebviewActivity extends SecureKeysBaseActivity {
         super.onCreate(savedInstanceState);
         mContext = this;
         mActivity = this;
+        ThemeHelper.onActivityCreateSetTheme(this);
         setContentView(R.layout.activity_webview);
 
         setupActionBar();
 
-        initWebView("file:///android_asset/index.html");
+        initWebView(ThemeHelper.instance(this).getCurrentTheme().equals(ThemeHelper.Theme.LIGHT)?"file:///android_asset/index.html":"file:///android_asset/index-dark.html");
     }
 
     @Override

@@ -7,4 +7,8 @@
         android:orderInCategory="100"
         android:title="@string/sfc_help"
         app:showAsAction="never"/>
+    <item android:id="@+id/action_theme"
+          android:orderInCategory="101"
+          android:title="Theme"
+          app:showAsAction="never" />
 </menu>

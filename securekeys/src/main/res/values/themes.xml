@@ -3,13 +3,20 @@
 
     <style name="SecureKeys" parent="Theme.AppCompat">
         <item name="android:buttonStyle">@style/DefaultButton</item>
-        <item name="android:windowBackground">@android:color/white</item>
     </style>
 
     <style name="SecureKeys.Light" parent="Theme.AppCompat.Light">
+        <item name="android:windowBackground">@null</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:buttonStyle">@style/DefaultButton</item>
         <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
+    </style>
+
+    <style name="SecureKeys.Dark" parent="Theme.AppCompat">
+        <item name="android:windowBackground">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:buttonStyle">@style/DefaultButton</item>
+        <item name="actionBarStyle">@style/SecureKeysActionBarStyle.Dark</item>
     </style>
 
 </resources>

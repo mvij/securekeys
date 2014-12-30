@@ -77,9 +77,9 @@ public class MeasuredCheckView extends View implements Checkable {
         int shadowColor = Color.parseColor("#B0000000");
         mTextPaint.setShadowLayer(2.0f,0,0,shadowColor);
 
-        mCheckedColor = context.getResources().getColor(R.color.accent);
-        mUnCheckedColor = context.getResources().getColor(R.color.normal);
-        mBackgroundColor = context.getResources().getColor(R.color.background);
+        mCheckedColor = context.getResources().getColor(R.color.light_accent);
+        mUnCheckedColor = context.getResources().getColor(R.color.light_normal);
+        mBackgroundColor = context.getResources().getColor(R.color.light_background);
     }
 
     public CharSequence getText() {

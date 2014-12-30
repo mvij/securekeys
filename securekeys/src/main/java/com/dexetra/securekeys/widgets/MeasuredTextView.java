@@ -36,6 +36,7 @@ public class MeasuredTextView extends View {
 
     private CharSequence mText;
     private String family;
+    private int colorResId;
     private boolean mAttached = false;
     private float[] measuredWidth;
 
@@ -47,6 +48,17 @@ public class MeasuredTextView extends View {
         this(context, attrs, 0);
     }
 
+    public void setColorResId(int colorResId,int shadowColorId) {
+        this.colorResId = colorResId;
+        mTextPaint.setColor(getResources().getColor(colorResId));
+        if(shadowColorId>0) {
+            int shadowColor = getResources().getColor(shadowColorId) /*Color.parseColor("#B0000000")*/;
+            mTextPaint.setShadowLayer(1.0f, 0, 0.4f, shadowColor);
+        }
+
+        invalidate();
+    }
+
     public MeasuredTextView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -55,7 +67,9 @@ public class MeasuredTextView extends View {
                     defStyleAttr, 0);
             mText = a.getText(R.styleable.MeasuredTextView_mtext);
             family = a.getString(R.styleable.MeasuredTextView_fontfamily);
-            mSuggestedTextSizeMultiplier = a.getFloat(R.styleable.MeasuredTextView_suggestedTextSizeMultiplier, 0.5f);
+            mSuggestedTextSizeMultiplier = a.getFloat(
+                    R.styleable.MeasuredTextView_suggestedTextSizeMultiplier, 0.5f);
+            colorResId = a.getResourceId(R.styleable.MeasuredTextView_tColor,R.color.light_accent);
             a.recycle();
         }
 
@@ -66,10 +80,9 @@ public class MeasuredTextView extends View {
 
         mTextPaint = new Paint();
         mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mTextPaint.setColor(context.getResources().getColor(R.color.accent));
+        mTextPaint.setColor(context.getResources().getColor(colorResId));
         mTextPaint.setAntiAlias(true);
-        //int shadowColor = Color.parseColor("#B0000000");
-        //mTextPaint.setShadowLayer(2.0f,0,0,shadowColor);
+        //mTextPaint.getColor()
 
     }
 
