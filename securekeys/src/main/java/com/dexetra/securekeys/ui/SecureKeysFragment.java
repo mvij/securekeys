@@ -282,7 +282,6 @@ public class SecureKeysFragment extends SecureKeysBaseFragment implements Secure
                 mPasswordView.setVisibility(View.VISIBLE);
                 //mPassPhraseView.setVisibility(View.GONE);
                 //mPassPhraseTextView.setText(passPhrase);
-
                 mPasswordTextView.setText(new Securekeys().getPassPhrase(passPhrase,
                         mPassLengthSeekBar.getProgress(), mCaseParamCheckBox.isChecked(),
                         mCharParamCheckBox.isChecked(), mNumParamCheckBox.isChecked()));
