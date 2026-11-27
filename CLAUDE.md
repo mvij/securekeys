@@ -4,15 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), single module `:securekeys`, package `xyz.mvij.securekeys`. Toolchain: Gradle 9.9.2 (wrapper), AGP 9.5.3 (built-in Kotlin), Kotlin 2.4.21, JDK 25 for the Gradle daemon (`gradle/gradle-daemon-jvm.properties`; bytecode targets Java 17), compileSdk 37.2, targetSdk 36, minSdk 26. Versions live in `gradle/libs.versions.toml`. Needs a local `local.properties` with `sdk.dir` (git-ignored).
+SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), single module `:securekeys`, package `xyz.mvij.securekeys`. JDK 25 runs the Gradle daemon (`gradle/gradle-daemon-jvm.properties`); bytecode targets Java 17. Needs a local `local.properties` with `sdk.dir` (git-ignored).
 
 ## Commands
 
 ```
 ./gradlew :securekeys:assembleDebug            # applicationId xyz.mvij.securekeys.debug
-./gradlew :securekeys:testDebugUnitTest        # JVM unit tests
-./gradlew :securekeys:testDebugUnitTest --tests '*PasswordGeneratorTest'
-./gradlew :securekeys:lintDebug
 ./gradlew :securekeys:assembleRelease          # R8 + resource shrinking; signed only if secure_keystore.properties exists
 ./gradlew :securekeys:bundleRelease            # AAB for Google Play (same signing rule)
 ```
@@ -23,19 +20,14 @@ SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), s
 
 - `PasswordGenerator` is the core: deterministic passphrase → password (MD5-seeded, rotation-based). It is a port of the old closed-source `SecureKeysLib.aar`, and output must stay byte-identical so users regenerate the same passwords. `src/test/resources/golden.tsv` holds 192 vectors captured from the original AAR; `PasswordGeneratorTest` pins them. Do not change the algorithm (including MD5, space-stripping, rotation) without understanding that this breaks existing users' passwords.
 - UI is Compose only: `MainActivity` (splash, edge-to-edge, theme override, clears clipboard on finish) → `ui/SecureKeysApp` switches between `GeneratorScreen`, `HelpScreen` and `SettingsScreen` with a saveable enum (no nav library). State lives in `GeneratorViewModel` (survives rotation; deliberately never persisted).
-- Splash: `Theme.SecureKeys.Starting` (androidx core-splashscreen; native API on 12+, compat below) shows the launcher's brass key on teal (steel at night), then `installSplashScreen()` swaps to `Theme.SecureKeys`.
-- `SettingsScreen` holds the theme choice (System/Light/Dark) and About: version, developer details from `res/values/developer.xml`, licenses.
 - Theme: Light/dark follow the system unless the user picked Light or Dark in Settings (`ThemeMode`); the override is stored in SharedPreferences (`<package>_preferences`, `current_theme` = LIGHT|DARK), the legacy app's layout.
-- Help is native Compose text (strings in `res/values/strings.xml`); the old WebView/HTML help and its remote-script dependencies are gone.
 - Brand: a key-cutting bench. Enamel teal for controls, brass for the result, nickel (light) / blued steel (dark) backgrounds. Colors, type scale and shapes live in `ui/Theme.kt`; the key's own colors are `LocalKeyColors`.
 - Fonts are bundled variable TTFs in `res/font` (latin subset, OFL; licenses in `third_party/fonts/`): Archivo for UI text, Archivo at width 125 for the wordmark/headings/numerals, Martian Mono only for the generated password.
 - The result is drawn by `ui/KeyBlade.kt`: a brass key whose cuts come from the password characters (`bitting()`), with the password stamped on the blade. Purely visual; it never feeds back into generation.
 - Motion: the splash key turns into place (`drawable/splash_key_animated.xml`, Android 12+; its length must match `windowSplashScreenAnimationDuration`), then `ui/BrandMark.kt` animates the top-bar logo once the splash clears (`MainActivity.splashDone`). Each Generate re-cuts the key (keyed on `GeneratorViewModel.generation`) with a scrambling stamp (`stampText()`), per-cut haptic ticks and a shine sweep.
-- Launcher icon is adaptive vector: brass key on teal, plus a monochrome layer.
 
 ## Notes
 
 - Application ID is `xyz.mvij.securekeys` (Vichitran's Play account, new upload keystore). The 2014 app was `com.dexetra.securekeys`; v4.0 is a new Play listing, not an in-place upgrade, so users install it alongside or instead of the old app and nothing carries over except the passwords themselves (the algorithm is unchanged).
 - The Gradle wrapper download can fail in restricted sandboxes; a manually unpacked Gradle 9.9.2 works for builds.
 - No instrumented/UI tests exist. The emulator in this setup is software-rendered and very slow; prefer unit tests.
-- CI: `.github/workflows/ci.yml` runs `testDebugUnitTest` and `lintDebug` on every push and pull request (JDK 25, ubuntu-latest); test and lint reports are uploaded as the `reports` artifact.
