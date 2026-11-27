@@ -1,0 +1,192 @@
+a	5	false	false	false	qqque
+a	5	false	false	true	qqqu1
+a	5	false	true	false	q#que
+a	5	false	true	true	q#qu1
+a	5	true	false	false	Qqque
+a	5	true	false	true	Qqqu1
+a	5	true	true	false	Q#que
+a	5	true	true	true	Q#qu1
+a	8	false	false	false	ueqqslsq
+a	8	false	false	true	u1qq1lsq
+a	8	false	true	false	ueq#slsq
+a	8	false	true	true	u1q#1lsq
+a	8	true	false	false	ueQqslSq
+a	8	true	false	true	u1Qq1lSq
+a	8	true	true	false	ueQ#slSq
+a	8	true	true	true	u1Q#1lSq
+a	16	false	false	false	ueqqslsfiuhqpwlq
+a	16	false	false	true	u1qq1ls4iu6qp7lq
+a	16	false	true	false	ueq#slsf{uhqp=lq
+a	16	false	true	true	u1q#1ls4{u6qp7lq
+a	16	true	false	false	ueQqslSfiuHqpwLq
+a	16	true	false	true	u1Qq1lS4iu6qp7Lq
+a	16	true	true	false	ueQ#slSf{uHqp=Lq
+a	16	true	true	true	u1Q#1lS4{u6qp7Lq
+a	25	false	false	false	pwlygxkfqpxyqueqqslsfiuhq
+a	25	false	false	true	p7ly5xk8qp2yqu1qq1ls4iu6q
+a	25	false	true	false	p=lygx?fqpx]queq#slsf{uhq
+a	25	false	true	true	p7ly5x?8qp2]qu1q#1ls4{u6q
+a	25	true	false	false	pwLygxKfqpXyqueQqslSfiuHq
+a	25	true	false	true	p7Ly5xK8qp2yqu1Qq1lS4iu6q
+a	25	true	true	false	p=LygxKfqpX]queQ#slSf{uHq
+a	25	true	true	true	p7Ly5xK8qp2]qu1Q#1lS4{u6q
+hello	5	false	false	false	dyukm
+hello	5	false	false	true	6yukm
+hello	5	false	true	false	dy^km
+hello	5	false	true	true	6y^km
+hello	5	true	false	false	dYukm
+hello	5	true	false	true	6Yukm
+hello	5	true	true	false	dY^km
+hello	5	true	true	true	6Y^km
+hello	8	false	false	false	yuuufkmd
+hello	8	false	false	true	yu9ufkm6
+hello	8	false	true	false	y^uufkmd
+hello	8	false	true	true	y^9ufkm6
+hello	8	true	false	false	YuuuFkmd
+hello	8	true	false	true	Yu9uFkm6
+hello	8	true	true	false	Y^uuFkmd
+hello	8	true	true	true	Y^9uFkm6
+hello	16	false	false	false	bgfhakmdyuuufulm
+hello	16	false	false	true	8gf4akm6yu9uf3lm
+hello	16	false	true	false	bgf.akmdy^uufu)m
+hello	16	false	true	true	8gf4akm6y^9uf3)m
+hello	16	true	false	false	BgfhAkmdYuuuFulm
+hello	16	true	false	true	8gf4Akm6Yu9uF3lm
+hello	16	true	true	false	Bgf.AkmdY^uuFu)m
+hello	16	true	true	true	8gf4Akm6Y^9uF3)m
+hello	25	false	false	false	fulmbgfhazueyafsxxkmdyuuu
+hello	25	false	false	true	f3lm8gf4az5ey1fs2xkm6yu9u
+hello	25	false	true	false	fu)mbgf.azue]afsx|kmdy^uu
+hello	25	false	true	true	f3)m8gf4az5e]1fs2|km6y^9u
+hello	25	true	false	false	FulmBgfhAzueYafsXxkmdYuuu
+hello	25	true	false	true	F3lm8gf4Az5eY1fs2xkm6Yu9u
+hello	25	true	true	false	Fu)mBgf.AzueYafsX|kmdY^uu
+hello	25	true	true	true	F3)m8gf4Az5eY1fs2|km6Y^9u
+correct horse	5	false	false	false	sleyb
+correct horse	5	false	false	true	sl3yb
+correct horse	5	false	true	false	sley!
+correct horse	5	false	true	true	sl3y!
+correct horse	5	true	false	false	sleYb
+correct horse	5	true	false	true	sl3Yb
+correct horse	5	true	true	false	sleY!
+correct horse	5	true	true	true	sl3Y!
+correct horse	8	false	false	false	ybcidsle
+correct horse	8	false	false	true	yb7idsl3
+correct horse	8	false	true	false	y!cidsle
+correct horse	8	false	true	true	y!7idsl3
+correct horse	8	true	false	false	YbciDsle
+correct horse	8	true	false	true	Yb7iDsl3
+correct horse	8	true	true	false	Y!ciDsle
+correct horse	8	true	true	true	Y!7iDsl3
+correct horse	16	false	false	false	ybcidasomfykisle
+correct horse	16	false	false	true	yb7id3so5fy7isl3
+correct horse	16	false	true	false	y!cida~omfy]isle
+correct horse	16	false	true	true	y!7id3~o5fy7isl3
+correct horse	16	true	false	false	YbciDasoMfykIsle
+correct horse	16	true	false	true	Yb7iD3so5fy7Isl3
+correct horse	16	true	true	false	Y!ciDa~oMfy]Isle
+correct horse	16	true	true	true	Y!7iD3~o5fy7Isl3
+correct horse	25	false	false	false	iumvfmtvotsleybcidasomfyk
+correct horse	25	false	false	true	iu1vf7tv9tsl3yb7id3so5fy7
+correct horse	25	false	true	false	iumv[mtvo[sley!cida~omfy]
+correct horse	25	false	true	true	iu1v[7tv9[sl3y!7id3~o5fy7
+correct horse	25	true	false	false	IumvFmtvOtsleYbciDasoMfyk
+correct horse	25	true	false	true	Iu1vF7tv9tsl3Yb7iD3so5fy7
+correct horse	25	true	true	false	IumvFmtvO[sleY!ciDa~oMfy]
+correct horse	25	true	true	true	Iu1vF7tv9[sl3Y!7iD3~o5fy7
+Pa55 phrase!	5	false	false	false	pwykv
+Pa55 phrase!	5	false	false	true	pwy7v
+Pa55 phrase!	5	false	true	false	|wykv
+Pa55 phrase!	5	false	true	true	|wy7v
+Pa55 phrase!	5	true	false	false	pwykV
+Pa55 phrase!	5	true	false	true	pwy7V
+Pa55 phrase!	5	true	true	false	|wykV
+Pa55 phrase!	5	true	true	true	|wy7V
+Pa55 phrase!	8	false	false	false	ewykvpae
+Pa55 phrase!	8	false	false	true	ewy7vp5e
+Pa55 phrase!	8	false	true	false	ewykv|ae
+Pa55 phrase!	8	false	true	true	ewy7v|5e
+Pa55 phrase!	8	true	false	false	EwykVpae
+Pa55 phrase!	8	true	false	true	Ewy7Vp5e
+Pa55 phrase!	8	true	true	false	EwykV|ae
+Pa55 phrase!	8	true	true	true	Ewy7V|5e
+Pa55 phrase!	16	false	false	false	ecigwddgtwykvpae
+Pa55 phrase!	16	false	false	true	e1ig1dd9twy7vp5e
+Pa55 phrase!	16	false	true	false	ec{gwdd{twykv|ae
+Pa55 phrase!	16	false	true	true	e1{g1dd9twy7v|5e
+Pa55 phrase!	16	true	false	false	EcigWddgTwykVpae
+Pa55 phrase!	16	true	false	true	E1ig1dd9Twy7Vp5e
+Pa55 phrase!	16	true	true	false	Ec{gWdd{TwykV|ae
+Pa55 phrase!	16	true	true	true	E1{g1dd9Twy7V|5e
+Pa55 phrase!	25	false	false	false	mikrlfwykvpaeecigwddgtelm
+Pa55 phrase!	25	false	false	true	m1kr0fwy7vp5ee1ig1dd9te8m
+Pa55 phrase!	25	false	true	false	~ikrl|wykv|aeec{gwdd{telm
+Pa55 phrase!	25	false	true	true	~1kr0|wy7v|5ee1{g1dd9te8m
+Pa55 phrase!	25	true	false	false	MikrLfwykVpaeEcigWddgTelm
+Pa55 phrase!	25	true	false	true	M1kr0fwy7Vp5eE1ig1dd9Te8m
+Pa55 phrase!	25	true	true	false	MikrL|wykV|aeEc{gWdd{Telm
+Pa55 phrase!	25	true	true	true	M1kr0|wy7V|5eE1{g1dd9Te8m
+ünïcode✓	5	false	false	false	umtkb
+ünïcode✓	5	false	false	true	1mtkb
+ünïcode✓	5	false	true	false	um|kb
+ünïcode✓	5	false	true	true	1m|kb
+ünïcode✓	5	true	false	false	uMtkb
+ünïcode✓	5	true	false	true	1Mtkb
+ünïcode✓	5	true	true	false	uM|kb
+ünïcode✓	5	true	true	true	1M|kb
+ünïcode✓	8	false	false	false	mtrgakbu
+ünïcode✓	8	false	false	true	mt0gakb1
+ünïcode✓	8	false	true	false	m|rgakbu
+ünïcode✓	8	false	true	true	m|0gakb1
+ünïcode✓	8	true	false	false	MtrgAkbu
+ünïcode✓	8	true	false	true	Mt0gAkb1
+ünïcode✓	8	true	true	false	M|rgAkbu
+ünïcode✓	8	true	true	true	M|0gAkb1
+ünïcode✓	16	false	false	false	dnplhkbumtrgalqn
+ünïcode✓	16	false	false	true	2np8hkb1mt0ga6qn
+ünïcode✓	16	false	true	false	dnp_hkbum|rgal#n
+ünïcode✓	16	false	true	true	2np8hkb1m|0ga6#n
+ünïcode✓	16	true	false	false	DnplHkbuMtrgAlqn
+ünïcode✓	16	true	false	true	2np8Hkb1Mt0gA6qn
+ünïcode✓	16	true	true	false	Dnp_HkbuM|rgAl#n
+ünïcode✓	16	true	true	true	2np8Hkb1M|0gA6#n
+ünïcode✓	25	false	false	false	alqndnplhkrwfptmzxkbumtrg
+ünïcode✓	25	false	false	true	a6qn2np8hk4wf0tm4xkb1mt0g
+ünïcode✓	25	false	true	false	al#ndnp_hkrw[ptmz!kbum|rg
+ünïcode✓	25	false	true	true	a6#n2np8hk4w[0tm4!kb1m|0g
+ünïcode✓	25	true	false	false	AlqnDnplHkrwFptmZxkbuMtrg
+ünïcode✓	25	true	false	true	A6qn2np8Hk4wF0tm4xkb1Mt0g
+ünïcode✓	25	true	true	false	Al#nDnp_HkrwFptmZ!kbuM|rg
+ünïcode✓	25	true	true	true	A6#n2np8Hk4wF0tm4!kb1M|0g
+The quick brown fox jumps over the lazy dog	5	false	false	false	sjgmv
+The quick brown fox jumps over the lazy dog	5	false	false	true	sj3mv
+The quick brown fox jumps over the lazy dog	5	false	true	false	sjgm!
+The quick brown fox jumps over the lazy dog	5	false	true	true	sj3m!
+The quick brown fox jumps over the lazy dog	5	true	false	false	sjgMv
+The quick brown fox jumps over the lazy dog	5	true	false	true	sj3Mv
+The quick brown fox jumps over the lazy dog	5	true	true	false	sjgM!
+The quick brown fox jumps over the lazy dog	5	true	true	true	sj3M!
+The quick brown fox jumps over the lazy dog	8	false	false	false	mvdvusjg
+The quick brown fox jumps over the lazy dog	8	false	false	true	mv4vusj3
+The quick brown fox jumps over the lazy dog	8	false	true	false	m!dvusjg
+The quick brown fox jumps over the lazy dog	8	false	true	true	m!4vusj3
+The quick brown fox jumps over the lazy dog	8	true	false	false	MvdvUsjg
+The quick brown fox jumps over the lazy dog	8	true	false	true	Mv4vUsj3
+The quick brown fox jumps over the lazy dog	8	true	true	false	M!dvUsjg
+The quick brown fox jumps over the lazy dog	8	true	true	true	M!4vUsj3
+The quick brown fox jumps over the lazy dog	16	false	false	false	mvdvubbupxrfesjg
+The quick brown fox jumps over the lazy dog	16	false	false	true	mv4vu0bu8xr0esj3
+The quick brown fox jumps over the lazy dog	16	false	true	false	m!dvub!upxr}esjg
+The quick brown fox jumps over the lazy dog	16	false	true	true	m!4vu0!u8xr0esj3
+The quick brown fox jumps over the lazy dog	16	true	false	false	MvdvUbbuPxrfEsjg
+The quick brown fox jumps over the lazy dog	16	true	false	true	Mv4vU0bu8xr0Esj3
+The quick brown fox jumps over the lazy dog	16	true	true	false	M!dvUb!uPxr}Esjg
+The quick brown fox jumps over the lazy dog	16	true	true	true	M!4vU0!u8xr0Esj3
+The quick brown fox jumps over the lazy dog	25	false	false	false	eynmkaciolsjgmvdvubbupxrf
+The quick brown fox jumps over the lazy dog	25	false	false	true	ey6mk3ci5lsj3mv4vu0bu8xr0
+The quick brown fox jumps over the lazy dog	25	false	true	false	eynm-acio}sjgm!dvub!upxr}
+The quick brown fox jumps over the lazy dog	25	false	true	true	ey6m-3ci5}sj3m!4vu0!u8xr0
+The quick brown fox jumps over the lazy dog	25	true	false	false	EynmKaciOlsjgMvdvUbbuPxrf
+The quick brown fox jumps over the lazy dog	25	true	false	true	Ey6mK3ci5lsj3Mv4vU0bu8xr0
+The quick brown fox jumps over the lazy dog	25	true	true	false	EynmKaciO}sjgM!dvUb!uPxr}
+The quick brown fox jumps over the lazy dog	25	true	true	true	Ey6mK3ci5}sj3M!4vU0!u8xr0

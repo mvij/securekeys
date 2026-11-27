@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
-    <style name="SecureKeys" parent="Theme.AppCompat">
-        <item name="android:buttonStyle">@style/DefaultButton</item>
+    <!-- Window theme shown before Compose draws; matches the light/dark Compose palettes. -->
+    <style name="Theme.SecureKeys" parent="android:Theme.Material.Light.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
     </style>
-
-    <style name="SecureKeys.Light" parent="Theme.AppCompat.Light">
-        <item name="android:windowBackground">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:buttonStyle">@style/DefaultButton</item>
-        <item name="actionBarStyle">@style/SecureKeysActionBarStyle</item>
-    </style>
-
-    <style name="SecureKeys.Dark" parent="Theme.AppCompat">
-        <item name="android:windowBackground">@null</item>
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:buttonStyle">@style/DefaultButton</item>
-        <item name="actionBarStyle">@style/SecureKeysActionBarStyle.Dark</item>
-    </style>
-
 </resources>

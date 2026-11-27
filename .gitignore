@@ -87,4 +87,10 @@ proguard/
 # Log Files
 *.log
 
+# Kotlin compiler sessions
+.kotlin/
 
+# Release signing (never commit)
+secure_keystore.properties
+*.jks
+*.keystore

@@ -1,15 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <string name="app_name">SecureKeys</string>
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
-    <string name="gen_pass_hint">[tap to copy Generated Password]</string>
-    <string name="enter_pass_hint">Enter passphrase</string>
-    <string name="hide_pass">hide passphrase</string>
-    <string name="please_enter_input">Please enter  a valid passphrase</string>
+    <string name="enter_passphrase">Enter passphrase</string>
+    <string name="show">Show</string>
+    <string name="hide">Hide</string>
+    <string name="password_length">Password length</string>
+    <string name="param_numbers">Numbers</string>
+    <string name="param_special">Special</string>
+    <string name="param_mixed">Mixed</string>
+    <string name="generate">Generate</string>
+    <string name="your_password">Your password is</string>
+    <string name="tap_to_copy">Tap to copy</string>
     <string name="password_copied">Password copied to clipboard</string>
-    <string name="password_length">Password Length</string>
-    <string name="sfc_help">Help</string>
-
+    <string name="more_options">More options</string>
+    <string name="back">Back</string>
+    <string name="help">Help</string>
+    <string name="theme_light">Light theme</string>
+    <string name="theme_dark">Dark theme</string>
+    <string name="help_title">Secure Keys Help</string>
+    <string name="help_how_title">How to use Secure Keys</string>
+    <string name="help_intro">Secure Keys is an easy, yet powerful tool that generates strong passwords from simple passphrases. Using it takes four steps:</string>
+    <string-array name="help_steps">
+        <item>Enter a passphrase of your choice. Something you can remember easily.</item>
+        <item>Choose the length of the password you want generated.</item>
+        <item>Choose the types of characters you want in your generated password.</item>
+        <item>Tap Generate to get a secure password.</item>
+    </string-array>
+    <string name="help_recommend_title">We recommend</string>
+    <string-array name="help_tips">
+        <item>Do not use the same password for multiple important accounts.</item>
+        <item>Use a password that has at least 15 characters, with at least one number, one uppercase letter, one lowercase letter and one special symbol.</item>
+        <item>Do not use the names of your family, friends or pets in your passwords.</item>
+        <item>Do not use postcodes, house numbers, phone numbers, birthdates, ID card numbers, social security numbers and so on in your passwords.</item>
+        <item>Do not use any dictionary word in your passwords.</item>
+        <item>Do not let your web browsers store your passwords, since passwords saved in browsers can be revealed easily.</item>
+        <item>Do not log in to important accounts on computers of others, or when connected to a public Wi-Fi hotspot, Tor, a free VPN or a web proxy.</item>
+        <item>Change your passwords every 10 weeks.</item>
+        <item>Remember a few master passwords and store the others in a file encrypted with 7-Zip, GPG or a disk-encryption tool such as BitLocker, or use a password manager.</item>
+        <item>Turn on two-step authentication whenever possible.</item>
+        <item>Do not store your critical passwords in the cloud.</item>
+    </string-array>
 </resources>
