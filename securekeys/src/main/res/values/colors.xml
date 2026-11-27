@@ -6,4 +6,6 @@
     <color name="ic_launcher_key">#E2B24E</color>
     <!-- Splash: enamel teal by day, blued steel by night, brass key on both. -->
     <color name="splash_background">#0B5D55</color>
+    <!-- Glint that flashes at the key's tip at the end of the splash animation. -->
+    <color name="splash_glint">#FFF4D6</color>
 </resources>

@@ -6,8 +6,25 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
 import android.os.PersistableBundle
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.SizeTransform
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.Animatable
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.LocalIndication
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,24 +61,35 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.flow.drop
+import kotlinx.coroutines.launch
 import xyz.mvij.securekeys.GeneratorViewModel
 import xyz.mvij.securekeys.R
 
@@ -69,24 +97,36 @@ import xyz.mvij.securekeys.R
 @Composable
 fun GeneratorScreen(
     viewModel: GeneratorViewModel,
+    splashDone: () -> Boolean,
     onHelp: () -> Unit,
     onSettings: () -> Unit,
 ) {
     val context = LocalContext.current
     val focus = LocalFocusManager.current
+    val haptics = LocalHapticFeedback.current
     var masked by rememberSaveable { mutableStateOf(true) }
     var menuOpen by remember { mutableStateOf(false) }
+    val generateInteraction = remember { MutableInteractionSource() }
+    val generateScale = pressScale(generateInteraction)
 
     fun generate() {
         focus.clearFocus()
+        haptics.performHapticFeedback(HapticFeedbackType.Confirm)
         viewModel.generate()
+    }
+
+    // A light tick for each step of the length slider, like a detent.
+    LaunchedEffect(Unit) {
+        snapshotFlow { viewModel.length.value.toInt() }
+            .drop(1)
+            .collect { haptics.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick) }
     }
 
     Scaffold(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall) },
+                title = { BrandMark(splashDone) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                 actions = {
                     IconButton(onClick = { menuOpen = true }) {
@@ -151,10 +191,7 @@ fun GeneratorScreen(
                         style = MaterialTheme.typography.titleMedium,
                         modifier = Modifier.weight(1f).padding(bottom = 4.dp),
                     )
-                    Text(
-                        viewModel.length.value.toInt().toString(),
-                        style = MaterialTheme.typography.displaySmall,
-                    )
+                    LengthCounter(viewModel.length.value.toInt())
                 }
                 // Passing onValueChange makes the caller own updates: an empty lambda swallowed every drag.
                 Slider(state = viewModel.length, onValueChange = { viewModel.length.value = it })
@@ -171,7 +208,14 @@ fun GeneratorScreen(
                     onClick = ::generate,
                     enabled = viewModel.canGenerate,
                     shape = MaterialTheme.shapes.large,
-                    modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
+                    interactionSource = generateInteraction,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 56.dp)
+                        .graphicsLayer {
+                            scaleX = generateScale.value
+                            scaleY = generateScale.value
+                        },
                 ) { Text(stringResource(R.string.generate), style = MaterialTheme.typography.titleMedium) }
                 Spacer(Modifier.height(36.dp))
 
@@ -181,10 +225,42 @@ fun GeneratorScreen(
     }
 }
 
+/** The length as a rolling counter: digits slide up as it grows and down as it shrinks. */
+@Composable
+private fun LengthCounter(length: Int) {
+    AnimatedContent(
+        targetState = length,
+        transitionSpec = {
+            val up = targetState > initialState
+            val enter = slideInVertically(spring(stiffness = Spring.StiffnessMedium)) { if (up) it / 2 else -it / 2 } + fadeIn(tween(120))
+            val exit = slideOutVertically(spring(stiffness = Spring.StiffnessMedium)) { if (up) -it / 2 else it / 2 } + fadeOut(tween(90))
+            (enter togetherWith exit).using(SizeTransform(clip = false))
+        },
+        contentAlignment = Alignment.BottomEnd,
+        label = "length",
+    ) { value ->
+        Text(value.toString(), style = MaterialTheme.typography.displaySmall)
+    }
+}
+
+/** Scale for a control that dips slightly while pressed and springs back on release. */
+@Composable
+private fun pressScale(interactionSource: MutableInteractionSource, pressed: Float = 0.96f): State<Float> {
+    val isPressed by interactionSource.collectIsPressedAsState()
+    return animateFloatAsState(
+        targetValue = if (isPressed) pressed else 1f,
+        animationSpec = spring(dampingRatio = 0.45f, stiffness = Spring.StiffnessMedium),
+        label = "press",
+    )
+}
+
 @Composable
 private fun KeyResult(viewModel: GeneratorViewModel, onCopy: (String) -> Unit) {
     val password = viewModel.password
-    var justCopied by remember(password) { mutableStateOf(false) }
+    val generation = viewModel.generation
+    var justCopied by remember(generation) { mutableStateOf(false) }
+    var copies by remember(generation) { mutableIntStateOf(0) }
+    val haptics = LocalHapticFeedback.current
     val copyLabel = stringResource(R.string.copy_password)
 
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -195,30 +271,56 @@ private fun KeyResult(viewModel: GeneratorViewModel, onCopy: (String) -> Unit) {
                 .clip(MaterialTheme.shapes.large)
                 .clickable(onClickLabel = copyLabel) {
                     onCopy(password)
+                    haptics.performHapticFeedback(HapticFeedbackType.Confirm)
                     viewModel.copied = true
                     justCopied = true
+                    copies++
                 }
         }
-        KeyBlade(password, keyModifier)
-        Text(
-            text = stringResource(
-                when {
-                    password == null -> R.string.key_blank
-                    justCopied -> R.string.copied
-                    else -> R.string.tap_to_copy
-                },
-            ),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
+        KeyBlade(
+            password,
+            keyModifier,
+            cutKey = generation,
+            shineKey = copies,
+            cutHaptics = true,
+            playCut = generation != viewModel.cutPlayed,
+            onCutDone = { viewModel.cutPlayed = generation },
+        )
+        val hint = when {
+            password == null -> R.string.key_blank
+            justCopied -> R.string.copied
+            else -> R.string.tap_to_copy
+        }
+        val hintText = stringResource(hint)
+        AnimatedContent(
+            targetState = hint,
+            transitionSpec = {
+                (fadeIn(tween(200, delayMillis = 60)) + slideInVertically { it / 3 }) togetherWith fadeOut(tween(100))
+            },
             modifier = Modifier
                 .padding(top = 12.dp)
-                .semantics { liveRegion = LiveRegionMode.Polite },
-        )
+                // The wrapper stays put while the text crossfades, so it carries the announcement and
+                // screen readers never hear the outgoing and incoming hints together.
+                .clearAndSetSemantics {
+                    contentDescription = hintText
+                    liveRegion = LiveRegionMode.Polite
+                },
+            label = "hint",
+        ) { res ->
+            Text(
+                text = stringResource(res),
+                style = MaterialTheme.typography.bodyMedium,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
-/** On: tonal fill with a teal edge. Off: just an outline, so the state never relies on colour alone. */
+/**
+ * On: tonal fill with a teal edge. Off: just an outline, so the state never relies on colour alone.
+ * The colours ease between states, the tile dips while pressed, and the symbol pops on each toggle.
+ */
 @Composable
 private fun OptionToggle(
     symbol: String,
@@ -228,21 +330,56 @@ private fun OptionToggle(
     modifier: Modifier = Modifier,
 ) {
     val colors = MaterialTheme.colorScheme
+    val haptics = LocalHapticFeedback.current
+    val scope = rememberCoroutineScope()
+    val interaction = remember { MutableInteractionSource() }
+    val tileScale = pressScale(interaction, pressed = 0.94f)
+    val pop = remember { Animatable(1f) }
+    val container by animateColorAsState(if (checked) colors.primaryContainer else colors.background, label = "container")
+    val content by animateColorAsState(if (checked) colors.onPrimaryContainer else colors.onSurfaceVariant, label = "content")
+    val edge by animateColorAsState(if (checked) colors.primary else colors.outlineVariant, label = "edge")
+    val edgeWidth by animateDpAsState(if (checked) 1.5.dp else 1.dp, label = "edgeWidth")
+
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = if (checked) colors.primaryContainer else colors.background,
-        contentColor = if (checked) colors.onPrimaryContainer else colors.onSurfaceVariant,
-        border = if (checked) BorderStroke(1.5.dp, colors.primary) else BorderStroke(1.dp, colors.outlineVariant),
+        color = container,
+        contentColor = content,
+        border = BorderStroke(edgeWidth, edge),
         modifier = modifier
+            .graphicsLayer {
+                scaleX = tileScale.value
+                scaleY = tileScale.value
+            }
             .clip(MaterialTheme.shapes.medium)
-            .toggleable(value = checked, role = Role.Checkbox, onValueChange = onCheckedChange),
+            .toggleable(
+                value = checked,
+                interactionSource = interaction,
+                indication = LocalIndication.current,
+                role = Role.Checkbox,
+                onValueChange = { on ->
+                    haptics.performHapticFeedback(if (on) HapticFeedbackType.ToggleOn else HapticFeedbackType.ToggleOff)
+                    scope.launch {
+                        pop.snapTo(if (on) 0.6f else 0.85f)
+                        pop.animateTo(1f, spring(dampingRatio = 0.32f, stiffness = Spring.StiffnessMediumLow))
+                    }
+                    onCheckedChange(on)
+                },
+            ),
     ) {
         Column(
             modifier = Modifier.heightIn(min = 76.dp).padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Text(symbol, style = MaterialTheme.typography.titleLarge)
+            Text(
+                symbol,
+                style = MaterialTheme.typography.titleLarge,
+                modifier = Modifier.graphicsLayer {
+                    scaleX = pop.value
+                    scaleY = pop.value
+                    rotationZ = (1f - pop.value) * -40f
+                },
+            )
             Text(label, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center)
         }
     }

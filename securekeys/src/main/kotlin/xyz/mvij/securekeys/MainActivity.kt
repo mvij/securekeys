@@ -4,6 +4,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.graphics.Color
 import android.os.Bundle
+import android.os.SystemClock
+import android.view.animation.AccelerateInterpolator
 import androidx.activity.ComponentActivity
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
@@ -24,13 +26,37 @@ import xyz.mvij.securekeys.ui.ThemePrefs
 class MainActivity : ComponentActivity() {
     private val viewModel: GeneratorViewModel by viewModels()
 
+    /** Becomes true once the splash has cleared, so the top-bar brand mark animates in view. */
+    private var splashDone by mutableStateOf(false)
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        // No splash runs when the activity is recreated (rotation), so the intro counts as played.
+        splashDone = savedInstanceState != null
         // Must run before super.onCreate: shows the brass-key splash, then swaps to Theme.SecureKeys.
         installSplashScreen().setOnExitAnimationListener { splash ->
+            // Let the key finish turning (Android 12+; both values are 0 on older versions), then it
+            // swells and fades as the splash clears.
+            val turnEnd = splash.iconAnimationStartMillis + splash.iconAnimationDurationMillis
+            val wait = (turnEnd - SystemClock.uptimeMillis()).coerceIn(0L, SPLASH_MAX_WAIT_MS)
+            val easing = AccelerateInterpolator()
+            // Android 12+ can show a splash without its icon (e.g. when another app or a notification
+            // opens us); core-splashscreen then throws from iconView, so the swell is best-effort.
+            runCatching { splash.iconView }.getOrNull()?.animate()
+                ?.setStartDelay(wait)
+                ?.scaleX(SPLASH_EXIT_SCALE)
+                ?.scaleY(SPLASH_EXIT_SCALE)
+                ?.setInterpolator(easing)
+                ?.setDuration(SPLASH_EXIT_MS)
+                ?.start()
             splash.view.animate()
+                .setStartDelay(wait)
                 .alpha(0f)
-                .setDuration(SPLASH_FADE_MS)
-                .withEndAction { splash.remove() }
+                .setInterpolator(easing)
+                .setDuration(SPLASH_EXIT_MS)
+                .withEndAction {
+                    splash.remove()
+                    splashDone = true
+                }
                 .start()
         }
         super.onCreate(savedInstanceState)
@@ -52,6 +78,7 @@ class MainActivity : ComponentActivity() {
             SecureKeysTheme(dark) {
                 SecureKeysApp(
                     viewModel = viewModel,
+                    splashDone = { splashDone },
                     themeMode = themeMode,
                     onThemeModeChange = { mode: ThemeMode ->
                         themeMode = mode
@@ -72,6 +99,10 @@ class MainActivity : ComponentActivity() {
     }
 
     private companion object {
-        const val SPLASH_FADE_MS = 200L
+        const val SPLASH_EXIT_MS = 260L
+        const val SPLASH_EXIT_SCALE = 1.35f
+
+        /** Upper bound on waiting for the icon animation, so a slow device never holds the app back. */
+        const val SPLASH_MAX_WAIT_MS = 1_000L
     }
 }

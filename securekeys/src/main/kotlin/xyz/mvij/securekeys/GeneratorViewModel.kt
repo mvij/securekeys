@@ -4,6 +4,7 @@ import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SliderState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -21,6 +22,13 @@ class GeneratorViewModel : ViewModel() {
     var special by mutableStateOf(false)
     var numbers by mutableStateOf(false)
     var password by mutableStateOf<String?>(null)
+
+    /** Bumps on every Generate, so the key re-cuts even when the password comes out the same. */
+    var generation by mutableIntStateOf(0)
+        private set
+
+    /** The generation whose cut has played, so coming back to the screen shows the key at rest. */
+    var cutPlayed = 0
     var copied = false
 
     val canGenerate: Boolean get() = passphrase.text.isNotBlank()
@@ -29,5 +37,6 @@ class GeneratorViewModel : ViewModel() {
         password = PasswordGenerator.generate(
             passphrase.text.toString(), length.value.toInt(), mixedCase, special, numbers,
         )
+        generation++
     }
 }
