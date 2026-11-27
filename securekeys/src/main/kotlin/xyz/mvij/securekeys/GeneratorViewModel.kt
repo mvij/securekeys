@@ -26,6 +26,9 @@ class GeneratorViewModel : ViewModel() {
     /** Bumps on every Generate, so the key re-cuts even when the password comes out the same. */
     var generation by mutableIntStateOf(0)
         private set
+
+    /** The generation whose cut has played, so coming back to the screen shows the key at rest. */
+    var cutPlayed = 0
     var copied = false
 
     val canGenerate: Boolean get() = passphrase.text.isNotBlank()

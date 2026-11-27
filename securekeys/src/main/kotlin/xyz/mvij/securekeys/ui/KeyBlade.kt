@@ -88,7 +88,8 @@ internal fun stampText(password: String, progress: Float): String {
  *
  * Whenever [cutKey] changes the key slides in and cuts from the shoulder to the tip; each character
  * of the stamp settles as its cut is made, with a haptic tick per cut if [cutHaptics] is set. Then a
- * glint sweeps along the brass, and again whenever [shineKey] changes (e.g. on copy).
+ * glint sweeps along the brass, and again whenever [shineKey] changes (e.g. on copy). Pass
+ * [playCut] = false to show an already-cut key at rest; [onCutDone] fires when a cut finishes.
  */
 @Composable
 fun KeyBlade(
@@ -97,16 +98,19 @@ fun KeyBlade(
     cutKey: Any? = password,
     shineKey: Int = 0,
     cutHaptics: Boolean = false,
+    playCut: Boolean = true,
+    onCutDone: () -> Unit = {},
 ) {
     val colors = LocalKeyColors.current
     val haptics = LocalHapticFeedback.current
-    val cut = remember(cutKey) { Animatable(if (password == null) 1f else 0f) }
-    val slide = remember(cutKey) { Animatable(if (password == null) 0f else 1f) }
+    val animate = password != null && playCut
+    val cut = remember(cutKey) { Animatable(if (animate) 0f else 1f) }
+    val slide = remember(cutKey) { Animatable(if (animate) 1f else 0f) }
     val shine = remember { Animatable(1f) }
     val levels = remember(password) { password?.let(::bitting).orEmpty() }
 
     LaunchedEffect(cutKey) {
-        if (password == null) return@LaunchedEffect
+        if (password == null || cut.value >= 1f) return@LaunchedEffect
         launch { slide.animateTo(0f, spring(dampingRatio = 0.55f, stiffness = Spring.StiffnessMediumLow)) }
         if (cutHaptics) {
             launch {
@@ -117,6 +121,7 @@ fun KeyBlade(
             }
         }
         cut.animateTo(1f, tween(durationMillis = 700, easing = FastOutSlowInEasing))
+        onCutDone()
         shine.snapTo(0f)
         shine.animateTo(1f, tween(durationMillis = 650, easing = LinearOutSlowInEasing))
     }

@@ -39,13 +39,15 @@ class MainActivity : ComponentActivity() {
             val turnEnd = splash.iconAnimationStartMillis + splash.iconAnimationDurationMillis
             val wait = (turnEnd - SystemClock.uptimeMillis()).coerceIn(0L, SPLASH_MAX_WAIT_MS)
             val easing = AccelerateInterpolator()
-            splash.iconView.animate()
-                .setStartDelay(wait)
-                .scaleX(SPLASH_EXIT_SCALE)
-                .scaleY(SPLASH_EXIT_SCALE)
-                .setInterpolator(easing)
-                .setDuration(SPLASH_EXIT_MS)
-                .start()
+            // Android 12+ can show a splash without its icon (e.g. when another app or a notification
+            // opens us); core-splashscreen then throws from iconView, so the swell is best-effort.
+            runCatching { splash.iconView }.getOrNull()?.animate()
+                ?.setStartDelay(wait)
+                ?.scaleX(SPLASH_EXIT_SCALE)
+                ?.scaleY(SPLASH_EXIT_SCALE)
+                ?.setInterpolator(easing)
+                ?.setDuration(SPLASH_EXIT_MS)
+                ?.start()
             splash.view.animate()
                 .setStartDelay(wait)
                 .alpha(0f)

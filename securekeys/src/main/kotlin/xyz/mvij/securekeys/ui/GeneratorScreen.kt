@@ -81,9 +81,10 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.clearAndSetSemantics
+import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.liveRegion
 import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -276,12 +277,21 @@ private fun KeyResult(viewModel: GeneratorViewModel, onCopy: (String) -> Unit) {
                     copies++
                 }
         }
-        KeyBlade(password, keyModifier, cutKey = generation, shineKey = copies, cutHaptics = true)
+        KeyBlade(
+            password,
+            keyModifier,
+            cutKey = generation,
+            shineKey = copies,
+            cutHaptics = true,
+            playCut = generation != viewModel.cutPlayed,
+            onCutDone = { viewModel.cutPlayed = generation },
+        )
         val hint = when {
             password == null -> R.string.key_blank
             justCopied -> R.string.copied
             else -> R.string.tap_to_copy
         }
+        val hintText = stringResource(hint)
         AnimatedContent(
             targetState = hint,
             transitionSpec = {
@@ -289,7 +299,12 @@ private fun KeyResult(viewModel: GeneratorViewModel, onCopy: (String) -> Unit) {
             },
             modifier = Modifier
                 .padding(top = 12.dp)
-                .semantics { liveRegion = LiveRegionMode.Polite },
+                // The wrapper stays put while the text crossfades, so it carries the announcement and
+                // screen readers never hear the outgoing and incoming hints together.
+                .clearAndSetSemantics {
+                    contentDescription = hintText
+                    liveRegion = LiveRegionMode.Polite
+                },
             label = "hint",
         ) { res ->
             Text(
