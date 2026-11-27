@@ -24,7 +24,9 @@
     <string name="theme_dark">Dark</string>
     <string name="settings_about">About</string>
     <string name="about_version">Version %1$s</string>
-    <string name="about_body">SecureKeys cuts a strong password from a passphrase you can remember, the same one every time. Nothing is stored, and the app has no internet access, so your passphrase never leaves this device.</string>
+    <string name="about_body">SecureKeys cuts a strong password from a passphrase you can remember, the same one every time. Nothing is stored.</string>
+    <string name="about_note_title">No ads. No internet needed.</string>
+    <string name="about_note_body">SecureKeys works fully offline and shows no ads. It doesn\'t even ask for internet access, so your passphrase never leaves this device.</string>
     <string name="settings_developer">Developer</string>
     <string name="developer_name_label">Made by</string>
     <string name="developer_email_label">Email</string>

@@ -1,6 +1,7 @@
 package com.dexetra.securekeys.ui
 
 import android.content.ActivityNotFoundException
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -169,6 +170,28 @@ private fun AboutHeader() {
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(top = 8.dp),
         )
+        OfflineNote(Modifier.padding(top = 16.dp))
+    }
+}
+
+/** Highlights that the app has no ads and no internet access, in the teal used for the app's controls. */
+@Composable
+private fun OfflineNote(modifier: Modifier = Modifier) {
+    Surface(
+        shape = MaterialTheme.shapes.medium,
+        color = MaterialTheme.colorScheme.primaryContainer,
+        contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.primary),
+        modifier = modifier.fillMaxWidth(),
+    ) {
+        Column(Modifier.padding(16.dp)) {
+            Text(stringResource(R.string.about_note_title), style = MaterialTheme.typography.titleMedium)
+            Text(
+                stringResource(R.string.about_note_body),
+                style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.padding(top = 4.dp),
+            )
+        }
     }
 }
 
