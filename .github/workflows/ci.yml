@@ -1,21 +1,27 @@
 name: CI
 
 on:
+  # Branch pushes are covered by their pull request; running on both doubled every PR's CI.
   push:
+    branches: [main]
+    paths-ignore: ['**/*.md', 'docs/**']
   pull_request:
+    paths-ignore: ['**/*.md', 'docs/**']
+  workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # A new push to the same PR or branch cancels the run it supersedes.
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
   test-and-lint:
     name: Unit tests and lint
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 15
 
     steps:
       - uses: actions/checkout@v5
@@ -26,23 +32,25 @@ jobs:
           distribution: temurin
           java-version: '25'
 
-      # Accepts SDK licenses so AGP can download the compileSdk platform (37.2) on demand.
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
-        with:
-          # The default also asks for the legacy 'tools' package, which no longer exists.
-          packages: platform-tools
+      # No Android SDK setup step: the ubuntu runner image ships the SDK with its licenses
+      # accepted (ANDROID_HOME), and AGP downloads any missing compileSdk platform itself.
 
-      # Also validates the Gradle wrapper jar and caches Gradle downloads.
+      # Also validates the Gradle wrapper jar and caches Gradle downloads and the build cache.
+      # With a GRADLE_ENCRYPTION_KEY secret it also saves the configuration cache, which skips
+      # Gradle's configuration phase on later runs; without the secret this is a no-op.
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v5
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_ENCRYPTION_KEY }}
 
-      - name: Unit tests
-        run: ./gradlew :securekeys:testDebugUnitTest
-
-      - name: Lint
-        if: ${{ !cancelled() }}
-        run: ./gradlew :securekeys:lintDebug
+      # One Gradle invocation so tests and lint share configuration and run in parallel.
+      # --continue still runs lint when tests fail (and vice versa); either failure fails the job.
+      # In-process Kotlin compilation avoids starting a separate Kotlin daemon JVM in CI.
+      - name: Unit tests and lint
+        run: >-
+          ./gradlew :securekeys:testDebugUnitTest :securekeys:lintDebug
+          --continue
+          -Pkotlin.compiler.execution.strategy=in-process
 
       - name: Upload reports
         if: ${{ always() }}
@@ -53,3 +61,4 @@ jobs:
             securekeys/build/reports/
             securekeys/build/test-results/
           if-no-files-found: ignore
+          retention-days: 14
