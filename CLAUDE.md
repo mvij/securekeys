@@ -22,9 +22,12 @@ SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), s
 
 - `PasswordGenerator` is the core: deterministic passphrase → password (MD5-seeded, rotation-based). It is a port of the old closed-source `SecureKeysLib.aar`, and output must stay byte-identical so users regenerate the same passwords. `src/test/resources/golden.tsv` holds 192 vectors captured from the original AAR; `PasswordGeneratorTest` pins them. Do not change the algorithm (including MD5, space-stripping, rotation) without understanding that this breaks existing users' passwords.
 - UI is Compose only: `MainActivity` (edge-to-edge, theme override, clears clipboard on finish) → `ui/SecureKeysApp` switches between `GeneratorScreen` and `HelpScreen` with a saveable boolean (no nav library). State lives in `GeneratorViewModel` (survives rotation; deliberately never persisted).
-- Theme: `ui/Theme.kt`. Light/dark follow the system unless the user toggled manually; the override is stored in the same SharedPreferences file/key as the legacy app (`<package>_preferences`, `current_theme` = LIGHT|DARK).
+- Theme: Light/dark follow the system unless the user toggled manually; the override is stored in the same SharedPreferences file/key as the legacy app (`<package>_preferences`, `current_theme` = LIGHT|DARK).
 - Help is native Compose text (strings in `res/values/strings.xml`); the old WebView/HTML help and its remote-script dependencies are gone.
-- Launcher icon is adaptive (coral/blue background by night mode, shield foreground, monochrome layer).
+- Brand: a key-cutting bench. Enamel teal for controls, brass for the result, nickel (light) / blued steel (dark) backgrounds. Colors, type scale and shapes live in `ui/Theme.kt`; the key's own colors are `LocalKeyColors`.
+- Fonts are bundled variable TTFs in `res/font` (latin subset, OFL; licenses in `third_party/fonts/`): Archivo for UI text, Archivo at width 125 for the wordmark/headings/numerals, Martian Mono only for the generated password.
+- The result is drawn by `ui/KeyBlade.kt`: a brass key whose cuts come from the password characters (`bitting()`), with the password stamped on the blade. Purely visual; it never feeds back into generation.
+- Launcher icon is adaptive vector: brass key on teal, plus a monochrome layer.
 
 ## Notes
 
