@@ -4,4 +4,17 @@
     <style name="Theme.SecureKeys" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:windowBackground">@color/window_background</item>
     </style>
+
+    <!--
+        Launch theme: the brass key on enamel teal, like the launcher icon. Uses the Android 12+
+        SplashScreen API; androidx core-splashscreen draws the same thing on older versions.
+        MainActivity.installSplashScreen() swaps to Theme.SecureKeys once the app is ready.
+        The splash icon follows adaptive-icon geometry (288dp canvas, 192dp visible circle, the
+        same 108:72 ratio), so the launcher foreground fits without a separate drawable.
+    -->
+    <style name="Theme.SecureKeys.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="postSplashScreenTheme">@style/Theme.SecureKeys</item>
+    </style>
 </resources>
