@@ -32,7 +32,7 @@ Version 4.0 is a full rewrite of the original 2015-16 Java/XML app.
 
 Requirements:
 
-- JDK 17 or newer
+- JDK 25 to run Gradle (pinned in `gradle/gradle-daemon-jvm.properties`; Gradle downloads it if missing). The app itself compiles to Java 17 bytecode.
 - Android SDK, with its path set in a `local.properties` file at the repo root (git-ignored):
 
   ```
@@ -73,7 +73,7 @@ The unit tests run on the JVM, no device needed. There are no instrumented or UI
 
 ## Continuous integration
 
-[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push and pull request. On `ubuntu-latest` with JDK 17 it runs the unit tests and then lint (lint still runs if the tests fail), and uploads the test and lint reports as a `reports` artifact on the workflow run.
+[`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on every push and pull request. On `ubuntu-latest` with JDK 25 it runs the unit tests and then lint (lint still runs if the tests fail), and uploads the test and lint reports as a `reports` artifact on the workflow run.
 
 ## Project layout
 

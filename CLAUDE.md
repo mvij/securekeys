@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), single module `:securekeys`, package `com.dexetra.securekeys`. Toolchain: Gradle 9.9.2 (wrapper), AGP 9.5.3 (built-in Kotlin), Kotlin 2.4.21, JDK 17+, compileSdk 37.2, targetSdk 36, minSdk 26. Versions live in `gradle/libs.versions.toml`. Needs a local `local.properties` with `sdk.dir` (git-ignored).
+SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), single module `:securekeys`, package `com.dexetra.securekeys`. Toolchain: Gradle 9.9.2 (wrapper), AGP 9.5.3 (built-in Kotlin), Kotlin 2.4.21, JDK 25 for the Gradle daemon (`gradle/gradle-daemon-jvm.properties`; bytecode targets Java 17), compileSdk 37.2, targetSdk 36, minSdk 26. Versions live in `gradle/libs.versions.toml`. Needs a local `local.properties` with `sdk.dir` (git-ignored).
 
 ## Commands
 
@@ -30,4 +30,4 @@ SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), s
 
 - The Gradle wrapper download can fail in restricted sandboxes; a manually unpacked Gradle 9.9.2 works for builds.
 - No instrumented/UI tests exist. The emulator in this setup is software-rendered and very slow; prefer unit tests.
-- CI: `.github/workflows/ci.yml` runs `testDebugUnitTest` and `lintDebug` on every push and pull request (JDK 17, ubuntu-latest); test and lint reports are uploaded as the `reports` artifact.
+- CI: `.github/workflows/ci.yml` runs `testDebugUnitTest` and `lintDebug` on every push and pull request (JDK 25, ubuntu-latest); test and lint reports are uploaded as the `reports` artifact.
