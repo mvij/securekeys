@@ -8,18 +8,29 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import com.dexetra.securekeys.GeneratorViewModel
 
+private enum class Screen { Generator, Help, Settings }
+
 @Composable
-fun SecureKeysApp(viewModel: GeneratorViewModel, dark: Boolean, onToggleTheme: () -> Unit) {
-    var showHelp by rememberSaveable { mutableStateOf(false) }
-    if (showHelp) {
-        BackHandler { showHelp = false }
-        HelpScreen(onBack = { showHelp = false })
-    } else {
-        GeneratorScreen(
+fun SecureKeysApp(
+    viewModel: GeneratorViewModel,
+    themeMode: ThemeMode,
+    onThemeModeChange: (ThemeMode) -> Unit,
+) {
+    var screen by rememberSaveable { mutableStateOf(Screen.Generator) }
+    val back = { screen = Screen.Generator }
+    when (screen) {
+        Screen.Generator -> GeneratorScreen(
             viewModel = viewModel,
-            dark = dark,
-            onHelp = { showHelp = true },
-            onToggleTheme = onToggleTheme,
+            onHelp = { screen = Screen.Help },
+            onSettings = { screen = Screen.Settings },
         )
+        Screen.Help -> {
+            BackHandler(onBack = back)
+            HelpScreen(onBack = back)
+        }
+        Screen.Settings -> {
+            BackHandler(onBack = back)
+            SettingsScreen(themeMode = themeMode, onThemeModeChange = onThemeModeChange, onBack = back)
+        }
     }
 }

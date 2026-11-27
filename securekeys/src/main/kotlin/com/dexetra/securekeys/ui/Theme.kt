@@ -158,17 +158,44 @@ fun SecureKeysTheme(dark: Boolean, content: @Composable () -> Unit) {
     }
 }
 
-/** Manual theme override; null follows the system. Same prefs file/key the legacy app used. */
+/** Theme choice from Settings. System follows the device; Light and Dark override it. */
+enum class ThemeMode {
+    System, Light, Dark;
+
+    /** Whether to draw dark, given what the system currently asks for. */
+    fun isDark(systemDark: Boolean): Boolean = when (this) {
+        System -> systemDark
+        Light -> false
+        Dark -> true
+    }
+
+    /** Value stored under the legacy key; null means no override (key removed). */
+    val prefValue: String?
+        get() = when (this) {
+            System -> null
+            Light -> "LIGHT"
+            Dark -> "DARK"
+        }
+
+    companion object {
+        fun fromPref(value: String?): ThemeMode = when (value) {
+            "DARK" -> Dark
+            "LIGHT" -> Light
+            else -> System
+        }
+    }
+}
+
+/** Persisted theme choice. Same prefs file/key the legacy app used, so old overrides carry over. */
 class ThemePrefs(context: Context) {
     private val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
 
-    var dark: Boolean?
-        get() = when (prefs.getString(KEY, null)) {
-            "DARK" -> true
-            "LIGHT" -> false
-            else -> null
+    var mode: ThemeMode
+        get() = ThemeMode.fromPref(prefs.getString(KEY, null))
+        set(value) = prefs.edit {
+            val stored = value.prefValue
+            if (stored == null) remove(KEY) else putString(KEY, stored)
         }
-        set(value) = prefs.edit { putString(KEY, if (value == true) "DARK" else "LIGHT") }
 
     private companion object {
         const val KEY = "current_theme"

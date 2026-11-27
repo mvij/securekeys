@@ -50,6 +50,8 @@ android {
 
     buildFeatures {
         compose = true
+        // VERSION_NAME for the About section.
+        buildConfig = true
     }
 
     // Emit Java 17 bytecode using whatever JDK runs Gradle (no separate JDK 17 install needed).
@@ -73,6 +75,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation(libs.androidx.core.splashscreen)
     debugImplementation(libs.androidx.compose.ui.tooling)
 
     testImplementation(libs.junit)
