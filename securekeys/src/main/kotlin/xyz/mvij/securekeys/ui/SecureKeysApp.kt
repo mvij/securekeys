@@ -13,6 +13,7 @@ private enum class Screen { Generator, Help, Settings }
 @Composable
 fun SecureKeysApp(
     viewModel: GeneratorViewModel,
+    splashDone: () -> Boolean,
     themeMode: ThemeMode,
     onThemeModeChange: (ThemeMode) -> Unit,
 ) {
@@ -21,6 +22,7 @@ fun SecureKeysApp(
     when (screen) {
         Screen.Generator -> GeneratorScreen(
             viewModel = viewModel,
+            splashDone = splashDone,
             onHelp = { screen = Screen.Help },
             onSettings = { screen = Screen.Settings },
         )

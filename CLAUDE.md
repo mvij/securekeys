@@ -30,6 +30,7 @@ SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), s
 - Brand: a key-cutting bench. Enamel teal for controls, brass for the result, nickel (light) / blued steel (dark) backgrounds. Colors, type scale and shapes live in `ui/Theme.kt`; the key's own colors are `LocalKeyColors`.
 - Fonts are bundled variable TTFs in `res/font` (latin subset, OFL; licenses in `third_party/fonts/`): Archivo for UI text, Archivo at width 125 for the wordmark/headings/numerals, Martian Mono only for the generated password.
 - The result is drawn by `ui/KeyBlade.kt`: a brass key whose cuts come from the password characters (`bitting()`), with the password stamped on the blade. Purely visual; it never feeds back into generation.
+- Motion: the splash key turns into place (`drawable/splash_key_animated.xml`, Android 12+; its length must match `windowSplashScreenAnimationDuration`), then `ui/BrandMark.kt` animates the top-bar logo once the splash clears (`MainActivity.splashDone`). Each Generate re-cuts the key (keyed on `GeneratorViewModel.generation`) with a scrambling stamp (`stampText()`), per-cut haptic ticks and a shine sweep.
 - Launcher icon is adaptive vector: brass key on teal, plus a monochrome layer.
 
 ## Notes

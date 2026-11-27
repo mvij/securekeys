@@ -16,4 +16,16 @@ class KeyBladeTest {
     fun samePasswordCutsTheSameKey() {
         assertEquals(bitting("f7Kq#2mZp!dX9w"), bitting("f7Kq#2mZp!dX9w"))
     }
+
+    @Test
+    fun stampSettlesOnThePasswordAsTheKeyIsCut() {
+        val password = "f7Kq#2mZp!dX9w"
+        for (step in 0..100) {
+            val stamp = stampText(password, step / 100f)
+            assertEquals(password.length, stamp.length)
+            val settled = (step / 100f * password.length).toInt()
+            assertEquals(password.take(settled), stamp.take(settled))
+        }
+        assertEquals(password, stampText(password, 1f))
+    }
 }

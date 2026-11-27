@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Splash icon: the launcher key pops in, turns into place like a key in a lock, clicks back a
+    little, and a glint flashes at the tip. Same geometry as ic_launcher_foreground.
+
+    The vector's static values are the resting pose, because before Android 12 core-splashscreen
+    shows this drawable without running it; every animator therefore states its valueFrom.
+    Total length must match windowSplashScreenAnimationDuration in themes.xml.
+-->
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt">
+    <aapt:attr name="android:drawable">
+        <vector
+            android:width="108dp"
+            android:height="108dp"
+            android:viewportWidth="108"
+            android:viewportHeight="108">
+            <group android:name="pop" android:pivotX="54" android:pivotY="54">
+                <group android:name="turn" android:pivotX="55" android:pivotY="54" android:rotation="-45">
+                    <path
+                        android:fillColor="@color/ic_launcher_key"
+                        android:pathData="M23,54a13,13 0,1 1,26 0a13,13 0,1 1,-26 0Z M29,54a5,5 0,1 0,10 0a5,5 0,1 0,-10 0Z M47,43L52,43L52,47L82,47L87,52L82,61L80,61L78,57.5L75,57.5L73,61L70,61L68,55.5L65,55.5L63,61L60,61L58,58.5L55,58.5L53,61L52,61L52,65L47,65Z" />
+                </group>
+            </group>
+            <!-- Four-point glint just past the tip; hidden (scale 0) at rest. -->
+            <group android:name="glint" android:pivotX="76" android:pivotY="31" android:scaleX="0" android:scaleY="0">
+                <path
+                    android:fillColor="@color/splash_glint"
+                    android:pathData="M76,25L77.2,29.8L82,31L77.2,32.2L76,37L74.8,32.2L70,31L74.8,29.8Z" />
+            </group>
+        </vector>
+    </aapt:attr>
+
+    <target android:name="pop">
+        <aapt:attr name="android:animation">
+            <set>
+                <objectAnimator android:propertyName="scaleX" android:valueFrom="0.3" android:valueTo="1"
+                    android:duration="450" android:interpolator="@android:interpolator/overshoot" />
+                <objectAnimator android:propertyName="scaleY" android:valueFrom="0.3" android:valueTo="1"
+                    android:duration="450" android:interpolator="@android:interpolator/overshoot" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="turn">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <objectAnimator android:propertyName="rotation" android:valueFrom="-135" android:valueTo="-45"
+                    android:duration="480" android:interpolator="@android:interpolator/fast_out_slow_in" />
+                <objectAnimator android:propertyName="rotation" android:valueFrom="-45" android:valueTo="-28"
+                    android:duration="110" android:interpolator="@android:interpolator/fast_out_linear_in" />
+                <objectAnimator android:propertyName="rotation" android:valueFrom="-28" android:valueTo="-45"
+                    android:duration="220" android:interpolator="@android:interpolator/overshoot" />
+            </set>
+        </aapt:attr>
+    </target>
+
+    <target android:name="glint">
+        <aapt:attr name="android:animation">
+            <set android:ordering="sequentially">
+                <set>
+                    <objectAnimator android:propertyName="scaleX" android:valueFrom="0" android:valueTo="0"
+                        android:duration="620" />
+                    <objectAnimator android:propertyName="scaleY" android:valueFrom="0" android:valueTo="0"
+                        android:duration="620" />
+                </set>
+                <set>
+                    <objectAnimator android:propertyName="scaleX" android:valueFrom="0" android:valueTo="1"
+                        android:duration="140" android:interpolator="@android:interpolator/decelerate_quad" />
+                    <objectAnimator android:propertyName="scaleY" android:valueFrom="0" android:valueTo="1"
+                        android:duration="140" android:interpolator="@android:interpolator/decelerate_quad" />
+                    <objectAnimator android:propertyName="rotation" android:valueFrom="0" android:valueTo="20"
+                        android:duration="140" />
+                </set>
+                <set>
+                    <objectAnimator android:propertyName="scaleX" android:valueFrom="1" android:valueTo="0"
+                        android:duration="180" android:interpolator="@android:interpolator/accelerate_quad" />
+                    <objectAnimator android:propertyName="scaleY" android:valueFrom="1" android:valueTo="0"
+                        android:duration="180" android:interpolator="@android:interpolator/accelerate_quad" />
+                    <objectAnimator android:propertyName="rotation" android:valueFrom="20" android:valueTo="45"
+                        android:duration="180" />
+                </set>
+            </set>
+        </aapt:attr>
+    </target>
+</animated-vector>

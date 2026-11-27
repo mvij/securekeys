@@ -10,11 +10,14 @@
         SplashScreen API; androidx core-splashscreen draws the same thing on older versions.
         MainActivity.installSplashScreen() swaps to Theme.SecureKeys once the app is ready.
         The splash icon follows adaptive-icon geometry (288dp canvas, 192dp visible circle, the
-        same 108:72 ratio), so the launcher foreground fits without a separate drawable.
+        same 108:72 ratio), so it reuses the launcher key's 108dp geometry. On Android 12+ the key
+        turns into place (splash_key_animated); older versions show it at rest.
     -->
     <style name="Theme.SecureKeys.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/splash_background</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_key_animated</item>
+        <!-- Length of splash_key_animated; MainActivity waits for it before exiting. -->
+        <item name="windowSplashScreenAnimationDuration">940</item>
         <item name="postSplashScreenTheme">@style/Theme.SecureKeys</item>
     </style>
 </resources>
