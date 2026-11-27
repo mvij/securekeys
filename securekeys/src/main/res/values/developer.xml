@@ -2,13 +2,11 @@
 <!--
     Developer details shown on the Settings screen (About > Developer).
 
-    PLACEHOLDERS: developer_name, developer_email and developer_website are stand-ins and must be
-    replaced with real details before release. developer_source_url is the real repository.
     Leave a value empty ("") to hide its row.
 -->
 <resources>
-    <string name="developer_name" translatable="false">[Developer name]</string>
-    <string name="developer_email" translatable="false">developer@example.com</string>
-    <string name="developer_website" translatable="false">https://example.com</string>
+    <string name="developer_name" translatable="false">Vichitran</string>
+    <string name="developer_email" translatable="false">contact@mvij.xyz</string>
+    <string name="developer_website" translatable="false">https://mvij.xyz</string>
     <string name="developer_source_url" translatable="false">https://github.com/mvij/securekeys</string>
 </resources>
