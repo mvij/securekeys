@@ -1,4 +1,4 @@
-package com.dexetra.securekeys.ui
+package xyz.mvij.securekeys.ui
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.FastOutSlowInEasing

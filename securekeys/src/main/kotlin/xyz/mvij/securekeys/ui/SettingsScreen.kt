@@ -1,4 +1,4 @@
-package com.dexetra.securekeys.ui
+package xyz.mvij.securekeys.ui
 
 import android.content.ActivityNotFoundException
 import androidx.compose.foundation.BorderStroke
@@ -39,8 +39,8 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
-import com.dexetra.securekeys.BuildConfig
-import com.dexetra.securekeys.R
+import xyz.mvij.securekeys.BuildConfig
+import xyz.mvij.securekeys.R
 
 /** Theme choice, plus About with the app version, developer details and licenses. */
 @OptIn(ExperimentalMaterial3Api::class)

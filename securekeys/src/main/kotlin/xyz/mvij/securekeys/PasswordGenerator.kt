@@ -1,4 +1,4 @@
-package com.dexetra.securekeys
+package xyz.mvij.securekeys
 
 import java.security.MessageDigest
 import java.util.Locale

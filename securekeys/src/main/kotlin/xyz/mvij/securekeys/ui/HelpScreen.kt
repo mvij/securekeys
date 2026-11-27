@@ -1,4 +1,4 @@
-package com.dexetra.securekeys.ui
+package xyz.mvij.securekeys.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.dexetra.securekeys.R
+import xyz.mvij.securekeys.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

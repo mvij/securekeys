@@ -1,4 +1,4 @@
-package com.dexetra.securekeys.ui
+package xyz.mvij.securekeys.ui
 
 import android.content.ClipData
 import android.content.ClipDescription
@@ -62,8 +62,8 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.dexetra.securekeys.GeneratorViewModel
-import com.dexetra.securekeys.R
+import xyz.mvij.securekeys.GeneratorViewModel
+import xyz.mvij.securekeys.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
