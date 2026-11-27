@@ -1,0 +1,51 @@
+# The six phrases from golden.tsv
+a
+hello
+correct horse
+Pa55 phrase!
+The quick brown fox jumps over the lazy dog
+ünïcode✓
+# Whitespace: only literal spaces are stripped; tab, newline and NBSP are kept
+ 
+     
+ a
+a 
+  lead and trail  
+a  b
+a\tb
+\t
+a\nb
+a b
+# Case, digits, symbols
+A
+HELLO
+HeLLo
+0
+1234567890
+!@#$%^&*()
+\\back\\slash
+# Long input (longer than the max length, and much longer)
+abcdefghijklmnopqrstuvwxyz
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+# Unicode: accents, sharp s, Greek (incl. final sigma), Cyrillic, CJK, RTL, Devanagari
+café
+Straße
+ÀÉÎÕÜ
+Ωμέγα
+ΟΔΟΣ
+привет МИР
+日本語
+密码 安全
+مرحبا
+שלום
+हिन्दी
+# Emoji (surrogate pairs, ZWJ sequence), combining vs precomposed, dotted I, titlecase digraph, ligature
+😀
+🔑 key 🔒
+👨‍👩‍👧
+é
+é
+İstanbul
+ǅ
+ﬀ
