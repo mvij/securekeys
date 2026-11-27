@@ -51,10 +51,18 @@ android {
     buildFeatures {
         compose = true
     }
+
+    // Emit Java 17 bytecode using whatever JDK runs Gradle (no separate JDK 17 install needed).
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
 }
 
 kotlin {
-    jvmToolchain(17)
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
 }
 
 dependencies {
