@@ -157,7 +157,8 @@ fun GeneratorScreen(
                         style = MaterialTheme.typography.displaySmall,
                     )
                 }
-                Slider(state = viewModel.length, onValueChange = {}) // SliderState updates itself
+                // Passing onValueChange makes the caller own updates: an empty lambda swallowed every drag.
+                Slider(state = viewModel.length, onValueChange = { viewModel.length.value = it })
                 Spacer(Modifier.height(16.dp))
 
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
