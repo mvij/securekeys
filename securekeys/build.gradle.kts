@@ -1,3 +1,4 @@
+import com.android.build.api.variant.DeviceTestBuilder
 import java.util.Properties
 
 plugins {
@@ -58,6 +59,14 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+}
+
+// There are no instrumented tests; without this, lintDebug still builds a model for and
+// analyzes the empty androidTest component. Remove it when src/androidTest is added.
+androidComponents {
+    beforeVariants { variant ->
+        variant.deviceTests[DeviceTestBuilder.ANDROID_TEST_TYPE]?.enable = false
     }
 }
 
