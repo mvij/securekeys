@@ -30,3 +30,4 @@ SecureKeys: Android password generator. Kotlin + Jetpack Compose (Material 3), s
 
 - The Gradle wrapper download can fail in restricted sandboxes; a manually unpacked Gradle 9.9.2 works for builds.
 - No instrumented/UI tests exist. The emulator in this setup is software-rendered and very slow; prefer unit tests.
+- CI: `.github/workflows/ci.yml` runs `testDebugUnitTest` and `lintDebug` on every push and pull request (JDK 17, ubuntu-latest); test and lint reports are uploaded as the `reports` artifact.
