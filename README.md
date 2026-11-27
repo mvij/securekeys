@@ -10,12 +10,12 @@ SecureKeys is an Android app that turns a simple passphrase into a strong, repea
 - Length 5 to 25, with optional mixed case, numbers and special characters.
 - Tap the result to copy it; the clipboard is cleared when you close the app.
 - Passwords are never persisted. The passphrase and password live only in memory (they survive a screen rotation, nothing more), and app backup is disabled.
-- Material 3 UI with its own look: the result is drawn as a brass key cut from your password. Light and dark themes follow the system, with a manual toggle.
-- Built-in help screen.
+- Material 3 UI with its own look: the result is drawn as a brass key cut from your password. Light and dark themes follow the system, or choose Light or Dark in Settings.
+- Built-in help screen, and a Settings screen with the theme choice and About (version, developer, licenses).
 
 ## How it works
 
-`PasswordGenerator` derives each character from an MD5 hash of the (space-stripped, lowercased) passphrase, then rotates the result. Earlier versions shipped this logic in a closed-source library, `SecureKeysLib.aar`. Version 4.0 replaces it with a Kotlin port whose output is byte-identical: `src/test/resources/golden.tsv` holds 192 test vectors captured from the original library, and `PasswordGeneratorTest` checks every one.
+`PasswordGenerator` derives each character from an MD5 hash of the (space-stripped, lowercased) passphrase, then rotates the result. Earlier versions shipped this logic in a closed-source library, `SecureKeysLib.aar`. Version 4.0 replaces it with a Kotlin port whose output is byte-identical: `src/test/resources/golden.tsv` (192) and `golden_extended.tsv` (9,000) hold test vectors captured from the original library, and `PasswordGeneratorTest` checks every one.
 
 **Do not change the algorithm.** Any change, including to how spaces or case are handled, changes the passwords existing users get from their passphrases.
 
@@ -26,7 +26,7 @@ SecureKeys is an Android app that turns a simple passphrase into a strong, repea
 - minSdk 26, targetSdk 36, compileSdk 37.2
 - Dependency versions live in `gradle/libs.versions.toml`
 
-Version 4.0 is a full rewrite of the original 2015-16 Java/XML app.
+Version 4.0 is a full rewrite of the original 2014-16 Java/XML app.
 
 ## Building
 
@@ -83,6 +83,6 @@ securekeys/src/main/kotlin/xyz/mvij/securekeys/
   PasswordGenerator.kt     passphrase -> password algorithm
   GeneratorViewModel.kt    screen state (in memory only)
   MainActivity.kt          entry point, theme, clipboard clearing
-  ui/                      Compose screens: generator, help, theme
+  ui/                      Compose screens: generator, help, settings, theme, key drawing
 securekeys/src/test/       unit tests and golden vectors
 ```

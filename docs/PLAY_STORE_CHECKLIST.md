@@ -1,6 +1,6 @@
 # Play Store release checklist (v4.0)
 
-Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: security, policy, and the store listing. Each item is checked against the repo as of commit `877ad14` and against Google's help pages as of 27 November 2026. Sources are listed at the end.
+Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: security, policy, and the store listing. Each item is checked against the repo as of commit `b6ccadd` (after the splash/Settings screen and the package rename) and against Google's help pages as of 27 November 2026. Sources are listed at the end.
 
 **Status key**
 
@@ -41,7 +41,7 @@ Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: 
 | 1.2.1 | Release signing comes from a git-ignored `secure_keystore.properties`; `*.jks` and `*.keystore` are git-ignored. | ✅ |
 | 1.2.2 | Enrol in **Play App Signing** when creating the app (required for new apps, which ship as AABs). Let Google generate the app signing key; you sign uploads with the Vichitran **upload key**. | 👤 |
 | 1.2.3 | Create the Vichitran upload keystore and point `secure_keystore.properties` at it. Back up the keystore and its passwords in two places outside the repo, such as a password manager and an offline copy. A lost upload key can be reset through Play support, but it takes days. | 👤 |
-| 1.2.4 | Check that no keystore or `secure_keystore.properties` was ever committed: `git log --all -- '*.jks' '*.keystore' secure_keystore.properties`. | ⬜ |
+| 1.2.4 | No keystore or `secure_keystore.properties` was ever committed (`git log --all -- '*.jks' '*.keystore' secure_keystore.properties` is empty). | ✅ |
 | 1.2.5 | Optional: a CI job that builds a signed AAB from GitHub secrets. Until then, release builds are made locally. | ⬜ |
 
 ### 1.3 Build hardening
@@ -60,7 +60,7 @@ Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: 
 |---|------|--------|
 | 1.4.1 | The manifest declares **no permissions**, including no `INTERNET`. The app can't send anything off the device. | ✅ |
 | 1.4.2 | Check the **merged** release manifest (`securekeys/build/intermediates/merged_manifests/release/`) for permissions added by libraries. AndroidX adds a signature-level `DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION`, which is harmless; anything else should be removed with `tools:node="remove"`. | ⬜ |
-| 1.4.3 | Only the launcher activity is exported. | ✅ |
+| 1.4.3 | The app's own manifest exports only the launcher activity. Confirm in the merged manifest (1.4.2) that library components (for example androidx.profileinstaller's receiver, guarded by `android.permission.DUMP`) are permission-protected. | ✅ |
 
 ### 1.5 Backups and stored data
 
@@ -83,7 +83,7 @@ Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: 
 
 | # | Item | Status |
 |---|------|--------|
-| 1.7.1 | Dependency surface is tiny: Compose BOM, Material 3, activity-compose, lifecycle-viewmodel-compose; JUnit only for tests. No analytics, ads, crash or network SDKs. | ✅ |
+| 1.7.1 | Dependency surface is tiny: Compose BOM (ui, Material 3, material-icons-core, ui-tooling-preview), activity-compose, lifecycle-viewmodel-compose, core-splashscreen; ui-tooling in debug only; JUnit only for tests. No analytics, ads, crash or network SDKs. | ✅ |
 | 1.7.2 | Unit tests and Android lint run in CI on every push and PR. | ✅ |
 | 1.7.3 | Add Dependabot (or Renovate) for the `gradle` and `github-actions` ecosystems so library and action updates arrive as PRs. | ⬜ |
 | 1.7.4 | Make the CI check required on `main` (branch protection) so a failing test or lint error can't be merged before a release. | 👤 |
@@ -108,7 +108,7 @@ Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: 
 |---|------|--------|
 | 2.2.1 | **A privacy policy is required for every app**, including apps that collect no data. The Data safety form can't be submitted without the link. | ⬜ |
 | 2.2.2 | Host it on a public, non-PDF, non-geofenced page, for example `https://mvij.xyz/securekeys/privacy`. It must name the developer (Vichitran) and give a contact (contact@mvij.xyz). A draft is in the appendix. | 👤 |
-| 2.2.3 | Optionally link the policy from the in-app Help screen. Not required for an app with no data collection, but a nice touch. | ⬜ |
+| 2.2.3 | Optionally add a privacy-policy row to Settings > About: a `developer_privacy_url` string in `res/values/developer.xml` plus a row in `SettingsScreen`. Not required for an app with no data collection, but a nice touch. | ⬜ |
 
 ### 2.3 Data safety form
 
@@ -124,7 +124,7 @@ Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: 
 |---|------|--------|
 | 2.4.1 | New apps and updates must target **API 36 (Android 16)** since 31 August 2026. `targetSdk = 36`. | ✅ |
 | 2.4.2 | Plan for the next bump. Google usually raises the bar each August; third-party sources expect API 37 in August 2027 (not yet on Google's page). `compileSdk` is already 37.2. | ⬜ |
-| 2.4.3 | `minSdk = 26` (Android 8.0). Users of the old app on Android 7.1 or older will stay on 3.0. Fine, but worth knowing. | ✅ |
+| 2.4.3 | `minSdk = 26` (Android 8.0). Phones on Android 7.1 or older can't install the new listing; they can keep using the old 3.0 app. | ✅ |
 
 ### 2.5 App content declarations (Play Console > Policy > App content)
 
@@ -158,7 +158,7 @@ There's no Play policy specific to password generators. These are the ones that 
 | 3.1.1 | New apps must be uploaded as an **Android App Bundle (AAB)**. Build with `./gradlew :securekeys:bundleRelease` (output: `securekeys/build/outputs/bundle/release/securekeys-release.aab`); the command is in README and CLAUDE.md. | ✅ |
 | 3.1.2 | `versionCode = 2`, `versionName = "4.0"`. It's a new listing, so any version code works; keep 2 and only ever go up. | ✅ |
 | 3.1.3 | Tag the release commit `v4.0` and write release notes ("What's new", 500 characters max per language). | ⬜ |
-| 3.1.4 | Release notes draft: *"First release of the new SecureKeys. If you used the old app, your passphrases still give the same passwords. New design, light and dark themes, built-in help, and the clipboard is cleared when you close the app."* | ⬜ |
+| 3.1.4 | Release notes draft: *"First release of the new SecureKeys. If you used the old app, your passphrases still give the same passwords. New design, light and dark themes, built-in help, and the copied password is hidden from clipboard previews."* | ⬜ |
 
 ### 3.2 Testing tracks
 
@@ -188,8 +188,9 @@ Full description draft:
 >
 > • Nothing is stored. No database, no account, no cloud. Your passphrase and password exist only in memory while the app is open.
 > • No internet access. The app has no network permission, so nothing can leave your phone.
-> • Tap the key to copy. The password is marked sensitive so it's hidden from clipboard previews, and the clipboard is cleared when you close the app.
-> • Light and dark themes that follow your system, with a manual toggle.
+> • Tap the key to copy. The password is marked sensitive so it's hidden from clipboard previews, and the clipboard is cleared when you exit the app.
+> • Light and dark themes that follow your system, or pick Light or Dark in Settings.
+> • No ads, no tracking, works fully offline.
 > • Built-in help.
 >
 > Used SecureKeys before? This is a complete rewrite with a new design, and the same passphrase and options still give the same password as the original app.
@@ -201,7 +202,7 @@ Full description draft:
 | # | Item | Status |
 |---|------|--------|
 | 3.4.1 | **App icon**: 512 × 512 px, 32-bit PNG with alpha, up to 1 MB. Export from the adaptive vector (`drawable/ic_launcher_foreground.xml` on the teal background) at full bleed; Play applies the mask itself. | ⬜ |
-| 3.4.2 | **Feature graphic**: 1024 × 500 px, JPEG or 24-bit PNG (no alpha). Required. Suggested: the brass key on blued steel with the wordmark in Archivo Expanded, matching the brand in `ui/Theme.kt`. `design/brand-preview.png` in the project files is a reference, not the right size. | ⬜ |
+| 3.4.2 | **Feature graphic**: 1024 × 500 px, JPEG or 24-bit PNG (no alpha). Required. Suggested: the brass key on blued steel with the wordmark in Archivo Expanded, matching the brand in `ui/Theme.kt`. The brand preview image shared earlier (`design/brand-preview.png`, outside the repo) is a style reference, not the right size. | ⬜ |
 | 3.4.3 | **Phone screenshots**: 2 to 8, PNG or JPEG, up to 8 MB, 320 to 3,840 px per side, longest side at most 2.3× the shortest. To be eligible for recommendations, provide **at least 4 at 1080 × 1920 portrait or larger**. Suggested set: empty generator, options and length set, brass key showing a password, dark theme, help screen. Use a sample passphrase, never a real one. | ⬜ |
 | 3.4.4 | **Tablet screenshots** (7" and 10"): at least 4, 1,080 to 7,680 px, 16:9 or 9:16. Optional, but improves visibility on large screens. Check the layout on a tablet first. | ⬜ |
 | 3.4.5 | **Alt text** for the feature graphic and screenshots (140 characters each). | ⬜ |
@@ -228,9 +229,9 @@ Full description draft:
 >
 > **We don't collect any data.** SecureKeys generates passwords entirely on your device. Your passphrase and generated passwords are kept only in your device's memory while the app is open. They are never saved to storage, backed up, or sent anywhere. The app has no internet permission and contains no analytics, advertising or tracking code.
 >
-> **What the app stores on your device.** Only your theme choice (light or dark) if you change it, so the app remembers it next time. It stays on your device.
+> **What the app stores on your device.** Only your theme choice, if you pick Light or Dark in Settings, so the app remembers it next time (choosing "Match system" removes it). It stays on your device.
 >
-> **Clipboard.** When you tap to copy a password, it's placed on your device's clipboard, where other apps you allow may read it, as with any copied text. SecureKeys marks it as sensitive and clears the clipboard when you close the app.
+> **Clipboard.** When you tap to copy a password, it's placed on your device's clipboard, where other apps you allow may read it, as with any copied text. SecureKeys marks it as sensitive so it's hidden from clipboard previews, and clears the clipboard when you exit the app with Back. If the app is swiped away or stopped by the system first, the password stays on the clipboard until something else replaces it.
 >
 > **Children.** SecureKeys isn't directed at children and collects no information from anyone.
 >
