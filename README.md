@@ -10,7 +10,7 @@ SecureKeys is an Android app that turns a simple passphrase into a strong, repea
 - Length 5 to 25, with optional mixed case, numbers and special characters.
 - Tap the result to copy it; the clipboard is cleared when you close the app.
 - Passwords are never persisted. The passphrase and password live only in memory (they survive a screen rotation, nothing more), and app backup is disabled.
-- Material 3 UI with light and dark themes that follow the system, plus a manual toggle.
+- Material 3 UI with its own look: the result is drawn as a brass key cut from your password. Light and dark themes follow the system, with a manual toggle.
 - Built-in help screen.
 
 ## How it works

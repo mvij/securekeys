@@ -6,16 +6,21 @@ import android.content.ClipboardManager
 import android.content.Context
 import android.os.Build
 import android.os.PersistableBundle
-import android.widget.Toast
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.consumeWindowInsets
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.foundation.text.KeyboardOptions
@@ -46,19 +51,18 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.foundation.text.TextAutoSize
 import com.dexetra.securekeys.GeneratorViewModel
-import com.dexetra.securekeys.PasswordGenerator
 import com.dexetra.securekeys.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +87,7 @@ fun GeneratorScreen(
         containerColor = MaterialTheme.colorScheme.background,
         topBar = {
             TopAppBar(
-                title = { Text(stringResource(R.string.app_name)) },
+                title = { Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall) },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = MaterialTheme.colorScheme.background),
                 actions = {
                     IconButton(onClick = { menuOpen = true }) {
@@ -103,93 +107,120 @@ fun GeneratorScreen(
             )
         },
     ) { padding ->
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(padding)
                 .consumeWindowInsets(padding)
                 .imePadding()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
+                .verticalScroll(rememberScrollState()),
+            contentAlignment = Alignment.TopCenter,
         ) {
-            OutlinedSecureTextField(
-                state = viewModel.passphrase,
-                modifier = Modifier.fillMaxWidth(),
-                label = { Text(stringResource(R.string.enter_passphrase)) },
-                textObfuscationMode = if (masked) TextObfuscationMode.RevealLastTyped else TextObfuscationMode.Visible,
-                keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
-                onKeyboardAction = { if (viewModel.canGenerate) generate() },
-                trailingIcon = {
-                    TextButton(onClick = { masked = !masked }) {
-                        Text(stringResource(if (masked) R.string.show else R.string.hide))
-                    }
-                },
-            )
+            Column(
+                modifier = Modifier
+                    .widthIn(max = 560.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .padding(bottom = 24.dp),
+            ) {
+                Text(
+                    stringResource(R.string.tagline),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                )
+                Spacer(Modifier.height(24.dp))
 
-            Column {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                    Text(stringResource(R.string.password_length), style = MaterialTheme.typography.titleMedium)
+                OutlinedSecureTextField(
+                    state = viewModel.passphrase,
+                    modifier = Modifier.fillMaxWidth(),
+                    label = { Text(stringResource(R.string.enter_passphrase)) },
+                    shape = MaterialTheme.shapes.medium,
+                    textObfuscationMode = if (masked) TextObfuscationMode.RevealLastTyped else TextObfuscationMode.Visible,
+                    keyboardOptions = KeyboardOptions(imeAction = ImeAction.Go),
+                    onKeyboardAction = { if (viewModel.canGenerate) generate() },
+                    trailingIcon = {
+                        TextButton(onClick = { masked = !masked }) {
+                            Text(stringResource(if (masked) R.string.show else R.string.hide))
+                        }
+                    },
+                )
+                Spacer(Modifier.height(24.dp))
+
+                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.Bottom) {
+                    Text(
+                        stringResource(R.string.password_length),
+                        style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.weight(1f).padding(bottom = 4.dp),
+                    )
                     Text(
                         viewModel.length.value.toInt().toString(),
-                        style = MaterialTheme.typography.titleMedium,
-                        fontWeight = FontWeight.Bold,
+                        style = MaterialTheme.typography.displaySmall,
                     )
                 }
                 Slider(state = viewModel.length, onValueChange = {}) // SliderState updates itself
-            }
+                Spacer(Modifier.height(16.dp))
 
-            Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                ParamTile("Aa", stringResource(R.string.param_mixed), viewModel.mixedCase, { viewModel.mixedCase = it }, Modifier.weight(1f))
-                ParamTile("56", stringResource(R.string.param_numbers), viewModel.numbers, { viewModel.numbers = it }, Modifier.weight(1f))
-                ParamTile("#*", stringResource(R.string.param_special), viewModel.special, { viewModel.special = it }, Modifier.weight(1f))
-            }
-
-            Button(
-                onClick = ::generate,
-                enabled = viewModel.canGenerate,
-                modifier = Modifier.fillMaxWidth().heightIn(min = 52.dp),
-            ) { Text(stringResource(R.string.generate), style = MaterialTheme.typography.titleMedium) }
-
-            viewModel.password?.let { password ->
-                Surface(
-                    onClick = {
-                        copyToClipboard(context, password)
-                        viewModel.copied = true
-                    },
-                    shape = MaterialTheme.shapes.large,
-                    color = MaterialTheme.colorScheme.surfaceVariant,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    Column(
-                        modifier = Modifier.padding(20.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(8.dp),
-                    ) {
-                        Text(stringResource(R.string.your_password), style = MaterialTheme.typography.labelLarge)
-                        Text(
-                            text = password,
-                            color = MaterialTheme.colorScheme.primary,
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = TextAlign.Center,
-                            maxLines = 1,
-                            autoSize = TextAutoSize.StepBased(minFontSize = 14.sp, maxFontSize = 32.sp),
-                        )
-                        Text(
-                            stringResource(R.string.tap_to_copy),
-                            style = MaterialTheme.typography.labelMedium,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                    }
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OptionToggle("Aa", stringResource(R.string.param_mixed), viewModel.mixedCase, { viewModel.mixedCase = it }, Modifier.weight(1f))
+                    OptionToggle("56", stringResource(R.string.param_numbers), viewModel.numbers, { viewModel.numbers = it }, Modifier.weight(1f))
+                    OptionToggle("#*", stringResource(R.string.param_special), viewModel.special, { viewModel.special = it }, Modifier.weight(1f))
                 }
+                Spacer(Modifier.height(24.dp))
+
+                Button(
+                    onClick = ::generate,
+                    enabled = viewModel.canGenerate,
+                    shape = MaterialTheme.shapes.large,
+                    modifier = Modifier.fillMaxWidth().heightIn(min = 56.dp),
+                ) { Text(stringResource(R.string.generate), style = MaterialTheme.typography.titleMedium) }
+                Spacer(Modifier.height(36.dp))
+
+                KeyResult(viewModel, onCopy = { copyToClipboard(context, it) })
             }
         }
     }
 }
 
 @Composable
-private fun ParamTile(
+private fun KeyResult(viewModel: GeneratorViewModel, onCopy: (String) -> Unit) {
+    val password = viewModel.password
+    var justCopied by remember(password) { mutableStateOf(false) }
+    val copyLabel = stringResource(R.string.copy_password)
+
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        val keyModifier = if (password == null) {
+            Modifier
+        } else {
+            Modifier
+                .clip(MaterialTheme.shapes.large)
+                .clickable(onClickLabel = copyLabel) {
+                    onCopy(password)
+                    viewModel.copied = true
+                    justCopied = true
+                }
+        }
+        KeyBlade(password, keyModifier)
+        Text(
+            text = stringResource(
+                when {
+                    password == null -> R.string.key_blank
+                    justCopied -> R.string.copied
+                    else -> R.string.tap_to_copy
+                },
+            ),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            textAlign = TextAlign.Center,
+            modifier = Modifier
+                .padding(top = 12.dp)
+                .semantics { liveRegion = LiveRegionMode.Polite },
+        )
+    }
+}
+
+/** On: tonal fill with a teal edge. Off: just an outline, so the state never relies on colour alone. */
+@Composable
+private fun OptionToggle(
     symbol: String,
     label: String,
     checked: Boolean,
@@ -199,17 +230,20 @@ private fun ParamTile(
     val colors = MaterialTheme.colorScheme
     Surface(
         shape = MaterialTheme.shapes.medium,
-        color = if (checked) colors.primary else colors.surfaceVariant,
-        contentColor = if (checked) colors.onPrimary else colors.onSurfaceVariant,
-        modifier = modifier.toggleable(value = checked, role = Role.Checkbox, onValueChange = onCheckedChange),
+        color = if (checked) colors.primaryContainer else colors.background,
+        contentColor = if (checked) colors.onPrimaryContainer else colors.onSurfaceVariant,
+        border = if (checked) BorderStroke(1.5.dp, colors.primary) else BorderStroke(1.dp, colors.outlineVariant),
+        modifier = modifier
+            .clip(MaterialTheme.shapes.medium)
+            .toggleable(value = checked, role = Role.Checkbox, onValueChange = onCheckedChange),
     ) {
         Column(
-            modifier = Modifier.heightIn(min = 96.dp).padding(8.dp),
+            modifier = Modifier.heightIn(min = 76.dp).padding(8.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
         ) {
-            Text(symbol, style = MaterialTheme.typography.headlineMedium, fontWeight = FontWeight.Bold)
-            Text(label, style = MaterialTheme.typography.labelLarge)
+            Text(symbol, style = MaterialTheme.typography.titleLarge)
+            Text(label, style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center)
         }
     }
 }
@@ -217,10 +251,8 @@ private fun ParamTile(
 private fun copyToClipboard(context: Context, text: String) {
     val clip = ClipData.newPlainText("secure", text)
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-        // Keeps the value out of clipboard previews; Android 13+ also shows its own copy confirmation.
+        // Keeps the value out of clipboard previews. The line under the key confirms the copy.
         clip.description.extras = PersistableBundle().apply { putBoolean(ClipDescription.EXTRA_IS_SENSITIVE, true) }
-    } else {
-        Toast.makeText(context, R.string.password_copied, Toast.LENGTH_SHORT).show()
     }
     context.getSystemService(ClipboardManager::class.java).setPrimaryClip(clip)
 }
