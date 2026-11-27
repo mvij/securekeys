@@ -69,9 +69,8 @@ import xyz.mvij.securekeys.R
 @Composable
 fun GeneratorScreen(
     viewModel: GeneratorViewModel,
-    dark: Boolean,
     onHelp: () -> Unit,
-    onToggleTheme: () -> Unit,
+    onSettings: () -> Unit,
 ) {
     val context = LocalContext.current
     val focus = LocalFocusManager.current
@@ -99,8 +98,8 @@ fun GeneratorScreen(
                             onClick = { menuOpen = false; onHelp() },
                         )
                         DropdownMenuItem(
-                            text = { Text(stringResource(if (dark) R.string.theme_light else R.string.theme_dark)) },
-                            onClick = { menuOpen = false; onToggleTheme() },
+                            text = { Text(stringResource(R.string.settings)) },
+                            onClick = { menuOpen = false; onSettings() },
                         )
                     }
                 },
