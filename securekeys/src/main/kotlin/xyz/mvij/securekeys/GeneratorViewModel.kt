@@ -1,4 +1,4 @@
-package com.dexetra.securekeys
+package xyz.mvij.securekeys
 
 import androidx.compose.foundation.text.input.TextFieldState
 import androidx.compose.material3.ExperimentalMaterial3Api

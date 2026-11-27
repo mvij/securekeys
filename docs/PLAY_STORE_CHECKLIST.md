@@ -12,15 +12,13 @@ Everything SecureKeys v4.0 needs before it goes on Google Play, in three areas: 
 
 ---
 
-## 0. Blockers to settle first
-
-Two items decide whether v4.0 ships as an **update** to the old app or as a **new app**. Settle them before anything else.
+## 0. Package and account (decided)
 
 | # | Item | Status |
 |---|------|--------|
-| 0.1 | **Is `com.dexetra.securekeys` already on Google Play, and in which developer account?** The 2014 app (v3.0, `versionCode 1`) used this application ID. If it's live (or was ever published) in a Dexetra account or any account other than Vichitran's, you need a [Play app transfer](https://support.google.com/googleplay/android-developer/answer/6230247) into the Vichitran account. If you can't get one, v4.0 needs a new application ID, and existing users won't get it as an upgrade. A package name can never be reused by another account, even after the app is unpublished. | 👤 |
-| 0.2 | **Do you still have the keystore that signed the 2014 release?** Updating an existing listing needs the original app signing key. You either upload it to Play App Signing, or the app is already enrolled and you only need its upload key. If the key is lost and the app isn't enrolled in Play App Signing, the listing can't be updated. You'd have to publish under a new application ID. | 👤 |
-| 0.3 | **Turkish-locale passphrase mismatch (see 1.1).** If 0.1 means this is an upgrade for existing users, fix this before release. | ⬜ |
+| 0.1 | **Application ID is `xyz.mvij.securekeys`**, published from the Vichitran developer account with a new upload keystore. The 2014 app (`com.dexetra.securekeys`, v3.0) is left as it is. v4.0 is a **new Play listing**, so old users won't get it as an automatic update: they install it fresh, and their passwords stay the same because the algorithm is unchanged. | ✅ |
+| 0.2 | Mention the old app in the listing ("Used SecureKeys before? Your passphrases still give the same passwords") so former users can find and trust the new listing. | ⬜ |
+| 0.3 | **Turkish-locale passphrase mismatch (see 1.1.2).** Former users on Turkish or Azerbaijani phones would get different passwords from the same passphrase. Fix before release. | ⬜ |
 
 ---
 
@@ -31,18 +29,18 @@ Two items decide whether v4.0 ships as an **update** to the old app or as a **ne
 | # | Item | Status |
 |---|------|--------|
 | 1.1.1 | Kotlin port matches the original AAR byte for byte on an English-locale device: 192 + 9,000 golden vectors in `src/test/resources/`, pinned by `PasswordGeneratorTest`, run in CI. | ✅ |
-| 1.1.2 | **Fix the Turkish/Azerbaijani lowercase mismatch.** The old AAR called `String.toLowerCase()` with the device's default locale (`tools/golden/generate.sh` says so, and pins the vectors to `en-US`). `PasswordGenerator.generate` now uses `lowercase(Locale.ROOT)`. On a device set to Turkish (`tr`) or Azerbaijani (`az`), the old app turned `I` into dotless `ı` (U+0131) and `İ` into `i`. v4.0 turns `I` into `i` and `İ` into `i̇` (two characters). Any passphrase with a capital `I` or `İ` gives a **different password after the upgrade** for those users. Suggested fix: lowercase with `Locale.getDefault()`, which matches the legacy behaviour exactly, and update the README's "How it works" note. | ⬜ |
+| 1.1.2 | **Fix the Turkish/Azerbaijani lowercase mismatch.** The old AAR called `String.toLowerCase()` with the device's default locale (`tools/golden/generate.sh` says so, and pins the vectors to `en-US`). `PasswordGenerator.generate` now uses `lowercase(Locale.ROOT)`. On a device set to Turkish (`tr`) or Azerbaijani (`az`), the old app turned `I` into dotless `ı` (U+0131) and `İ` into `i`. v4.0 turns `I` into `i` and `İ` into `i̇` (two characters). Any passphrase with a capital `I` or `İ` gives a **different password in v4.0 than in the old app** for those users. Suggested fix: lowercase with `Locale.getDefault()`, which matches the legacy behaviour exactly, and update the README's "How it works" note. | ⬜ |
 | 1.1.3 | Add Turkish-locale golden vectors: run the AAR with `-Duser.language=tr -Duser.country=TR` over phrases containing `I`, `İ`, `ı` and `i`, then add a test that sets the default locale to `tr-TR` and checks them. | ⬜ |
 | 1.1.4 | Check the other legacy defaults: `getBytes()` on Android is always UTF-8, so the port's explicit UTF-8 already matches. No further work unless the golden generator shows otherwise. | ✅ |
-| 1.1.5 | Before release, install the old 3.0 APK, write down a few passwords, then upgrade in place to the v4.0 release build and confirm they're the same (one passphrase with a capital `I`, one with spaces, one with non-ASCII). | 👤 |
+| 1.1.5 | Before release, install the old 3.0 APK and the v4.0 release build side by side (different application IDs, so both fit), and check that a few passphrases give the same password in both: one with a capital `I`, one with spaces, one with non-ASCII. | 👤 |
 
 ### 1.2 Signing and Play App Signing
 
 | # | Item | Status |
 |---|------|--------|
 | 1.2.1 | Release signing comes from a git-ignored `secure_keystore.properties`; `*.jks` and `*.keystore` are git-ignored. | ✅ |
-| 1.2.2 | Enrol in **Play App Signing**. It's required for new apps, which must ship as AABs. Google holds the app signing key and you sign uploads with a separate **upload key**. For an existing app (0.2), you upload the original key during enrolment. | 👤 |
-| 1.2.3 | Create the upload key (if new) and point `secure_keystore.properties` at it. Back up the keystore and its passwords in two places outside the repo, such as a password manager and an offline copy. | 👤 |
+| 1.2.2 | Enrol in **Play App Signing** when creating the app (required for new apps, which ship as AABs). Let Google generate the app signing key; you sign uploads with the Vichitran **upload key**. | 👤 |
+| 1.2.3 | Create the Vichitran upload keystore and point `secure_keystore.properties` at it. Back up the keystore and its passwords in two places outside the repo, such as a password manager and an offline copy. A lost upload key can be reset through Play support, but it takes days. | 👤 |
 | 1.2.4 | Check that no keystore or `secure_keystore.properties` was ever committed: `git log --all -- '*.jks' '*.keystore' secure_keystore.properties`. | ⬜ |
 | 1.2.5 | Optional: a CI job that builds a signed AAB from GitHub secrets. Until then, release builds are made locally. | ⬜ |
 
@@ -146,7 +144,7 @@ There's no Play policy specific to password generators. These are the ones that 
 |---|------|--------|
 | 2.6.1 | **Deceptive behaviour / misleading claims**: don't overstate security in the listing ("military-grade", "unhackable", "encrypted vault"). Describe it as it is: a deterministic generator that stores nothing. | ⬜ |
 | 2.6.2 | **Accessibility API and Autofill/Credential Manager** policies cover password managers that fill other apps. SecureKeys uses neither, so they don't apply. Revisit if autofill is ever added. | ✅ |
-| 2.6.3 | **Impersonation / IP**: the old Dexetra name is in the package ID only. Make sure the listing, icon and screenshots don't use another company's brand. | ✅ |
+| 2.6.3 | **Impersonation / IP**: the application ID is now `xyz.mvij.securekeys`, matching the developer's own domain. Make sure the listing, icon and screenshots don't use another company's brand (including Dexetra's). | ✅ |
 | 2.6.4 | **User Data policy**: met by no collection plus a privacy policy (2.2, 2.3). | ⬜ |
 
 ---
@@ -157,16 +155,16 @@ There's no Play policy specific to password generators. These are the ones that 
 
 | # | Item | Status |
 |---|------|--------|
-| 3.1.1 | New apps must be uploaded as an **Android App Bundle (AAB)**. Build with `./gradlew :securekeys:bundleRelease` (output: `securekeys/build/outputs/bundle/release/securekeys-release.aab`). Add this command to README and CLAUDE.md, which only mention `assembleRelease` today. | ⬜ |
-| 3.1.2 | `versionCode = 2`, `versionName = "4.0"`. If the old app is on Play (0.1), the version code must be higher than the highest one ever uploaded there; check in the old listing's App bundle explorer. | 👤 |
+| 3.1.1 | New apps must be uploaded as an **Android App Bundle (AAB)**. Build with `./gradlew :securekeys:bundleRelease` (output: `securekeys/build/outputs/bundle/release/securekeys-release.aab`); the command is in README and CLAUDE.md. | ✅ |
+| 3.1.2 | `versionCode = 2`, `versionName = "4.0"`. It's a new listing, so any version code works; keep 2 and only ever go up. | ✅ |
 | 3.1.3 | Tag the release commit `v4.0` and write release notes ("What's new", 500 characters max per language). | ⬜ |
-| 3.1.4 | Release notes draft: *"SecureKeys 4.0 is a full rewrite with a new look. Your passwords stay the same: the same passphrase and options still give the same password. Now with light and dark themes, a clearer help screen, and the clipboard cleared when you close the app."* | ⬜ |
+| 3.1.4 | Release notes draft: *"First release of the new SecureKeys. If you used the old app, your passphrases still give the same passwords. New design, light and dark themes, built-in help, and the clipboard is cleared when you close the app."* | ⬜ |
 
 ### 3.2 Testing tracks
 
 | # | Item | Status |
 |---|------|--------|
-| 3.2.1 | **Internal testing** first (up to 100 testers, available within minutes, no Data safety form needed). Check install, upgrade from 3.0 (1.1.5) and the minified build. | 👤 |
+| 3.2.1 | **Internal testing** first (up to 100 testers, available within minutes, no Data safety form needed). Check install, the side-by-side comparison with 3.0 (1.1.5) and the minified build. | 👤 |
 | 3.2.2 | Read the **pre-launch report** (automatic on test tracks) for crashes, accessibility and security warnings. | 👤 |
 | 3.2.3 | **Closed testing** with 12+ testers for 14 days if 2.1.4 applies, then apply for production. | 👤 |
 | 3.2.4 | **Production** with a staged rollout (for example 20%, then 50%, then 100%), watching Android vitals between steps. | 👤 |
@@ -194,7 +192,7 @@ Full description draft:
 > • Light and dark themes that follow your system, with a manual toggle.
 > • Built-in help.
 >
-> Upgrading from an earlier version? Version 4.0 is a complete rewrite with a new design, and your passwords are unchanged.
+> Used SecureKeys before? This is a complete rewrite with a new design, and the same passphrase and options still give the same password as the original app.
 >
 > Tip: use a passphrase only you know, and vary it per site (for example by adding the site's name) to get a different password for each one.
 
@@ -215,7 +213,7 @@ Full description draft:
 |---|------|--------|
 | 3.5.1 | All Play Console *Dashboard > Set up your app* tasks show complete. | 👤 |
 | 3.5.2 | Countries and regions selected; price set to free (it can't go from free to paid later). | 👤 |
-| 3.5.3 | Signed AAB uploaded to internal testing, installed from Play, upgrade from 3.0 checked (1.1.5). | 👤 |
+| 3.5.3 | Signed AAB uploaded to internal testing, installed from Play, passwords match 3.0 (1.1.5). | 👤 |
 | 3.5.4 | CI green on the release commit; release tagged. | ⬜ |
 
 ---

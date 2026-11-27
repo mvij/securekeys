@@ -42,8 +42,9 @@ Requirements:
 Then:
 
 ```
-./gradlew :securekeys:assembleDebug     # debug APK, applicationId com.dexetra.securekeys.debug
+./gradlew :securekeys:assembleDebug     # debug APK, applicationId xyz.mvij.securekeys.debug
 ./gradlew :securekeys:assembleRelease   # release APK, minified with R8 and resource shrinking
+./gradlew :securekeys:bundleRelease     # release AAB for Google Play
 ```
 
 The debug build uses its own application ID, so it can be installed next to the release app.
@@ -78,7 +79,7 @@ The unit tests run on the JVM, no device needed. There are no instrumented or UI
 ## Project layout
 
 ```
-securekeys/src/main/kotlin/com/dexetra/securekeys/
+securekeys/src/main/kotlin/xyz/mvij/securekeys/
   PasswordGenerator.kt     passphrase -> password algorithm
   GeneratorViewModel.kt    screen state (in memory only)
   MainActivity.kt          entry point, theme, clipboard clearing

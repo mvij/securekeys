@@ -1,4 +1,4 @@
-package com.dexetra.securekeys.ui
+package xyz.mvij.securekeys.ui
 
 import android.content.Context
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
-import com.dexetra.securekeys.R
+import xyz.mvij.securekeys.R
 
 /*
  * Brand: a key-cutting bench. Enamel teal for controls, brass for the cut key (the result),
@@ -158,7 +158,7 @@ fun SecureKeysTheme(dark: Boolean, content: @Composable () -> Unit) {
     }
 }
 
-/** Manual theme override; null follows the system. Same prefs file/key the legacy app used. */
+/** Manual theme override; null follows the system. Same file/key layout as the legacy app (`<package>_preferences`, `current_theme`). */
 class ThemePrefs(context: Context) {
     private val prefs = context.getSharedPreferences("${context.packageName}_preferences", Context.MODE_PRIVATE)
 

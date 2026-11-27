@@ -1,4 +1,4 @@
-package com.dexetra.securekeys
+package xyz.mvij.securekeys
 
 import android.content.ClipData
 import android.content.ClipboardManager
@@ -15,9 +15,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import com.dexetra.securekeys.ui.SecureKeysApp
-import com.dexetra.securekeys.ui.SecureKeysTheme
-import com.dexetra.securekeys.ui.ThemePrefs
+import xyz.mvij.securekeys.ui.SecureKeysApp
+import xyz.mvij.securekeys.ui.SecureKeysTheme
+import xyz.mvij.securekeys.ui.ThemePrefs
 
 class MainActivity : ComponentActivity() {
     private val viewModel: GeneratorViewModel by viewModels()

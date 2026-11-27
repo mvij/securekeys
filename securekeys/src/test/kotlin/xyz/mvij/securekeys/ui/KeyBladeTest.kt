@@ -1,4 +1,4 @@
-package com.dexetra.securekeys.ui
+package xyz.mvij.securekeys.ui
 
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue

@@ -11,14 +11,14 @@ val signProps = rootProject.file("secure_keystore.properties").takeIf { it.exist
 }
 
 android {
-    namespace = "com.dexetra.securekeys"
+    namespace = "xyz.mvij.securekeys"
     // Compose 1.13 / lifecycle 2.11 require compiling against API 37.1+.
     compileSdk {
         version = release(37) { minorApiLevel = 2 }
     }
 
     defaultConfig {
-        applicationId = "com.dexetra.securekeys"
+        applicationId = "xyz.mvij.securekeys"
         minSdk = 26
         targetSdk = 36
         versionCode = 2

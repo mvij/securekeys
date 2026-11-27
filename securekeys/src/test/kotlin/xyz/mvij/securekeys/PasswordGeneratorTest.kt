@@ -1,4 +1,4 @@
-package com.dexetra.securekeys
+package xyz.mvij.securekeys
 
 import org.junit.Assert.assertEquals
 import org.junit.Test
