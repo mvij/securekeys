@@ -2,14 +2,14 @@
 
 [![CI](https://github.com/mvij/securekeys/actions/workflows/ci.yml/badge.svg)](https://github.com/mvij/securekeys/actions/workflows/ci.yml)
 
-SecureKeys is an Android app that turns a simple passphrase into a strong, repeatable password. You type a passphrase, choose a length from 5 to 25 characters, and pick which extras to mix in (uppercase letters, numbers, special characters). The same passphrase with the same options always gives the same password, so nothing is ever stored: no database, no sync, no account.
+SecureKeys is an Android app that turns a simple passphrase into a strong, repeatable password. You type a passphrase, choose a length from 5 to 25 characters, and pick which extras to mix in (uppercase letters, numbers, special characters). The same passphrase with the same options always gives the same password, so no passwords are ever stored: no database, no sync, no account.
 
 ## Features
 
 - Deterministic passwords: same passphrase and options, same password, on any device running the app.
 - Length 5 to 25, with optional mixed case, numbers and special characters.
 - Tap the result to copy it; the clipboard is cleared when you close the app.
-- Nothing is persisted. The passphrase and password live only in memory (they survive a screen rotation, nothing more), and app backup is disabled.
+- Passwords are never persisted. The passphrase and password live only in memory (they survive a screen rotation, nothing more), and app backup is disabled.
 - Material 3 UI with light and dark themes that follow the system, plus a manual toggle.
 - Built-in help screen.
 
